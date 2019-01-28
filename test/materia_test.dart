@@ -62,6 +62,21 @@ void main() {
     expect(result.passwordResetToken.isNotEmpty, true);
   });
 
+  test('validation-tmp-user', () async {
+    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String email = 'hogehoge$timestamp@example.com';
+    var data = {
+      'email': email,
+      'role': 'test',
+    };
+    final TmpToken tmpToken = await tmpRegistration(basePath, data);
+    data = {
+      'email': tmpToken.user.email
+    };
+    final Map<String, dynamic> result = await validationTmpUser(basePath, data, tmpToken.userRegistrationToken);
+    expect(result['message'], 'authenticated');
+  });
+
 
 
 }
