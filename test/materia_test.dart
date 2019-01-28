@@ -20,17 +20,21 @@ void main() {
     expect(token.id, 1);
   });
 
-//  test('signUp', () async {
-//    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-//    var data = {
-//      'email': 'hogehoge$timestamp@example.com',
-//      'password': 'hogehoge',
-//      'password_confirmation': 'hogehoge'
-//    };
-//    final User user = await tmpRegistration(basePath, data);
-//    expect(user.email, 'hogehoge$timestamp@example.com');
-//
-//  });
+  test('refresh', () async {
+
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+
+    data = {
+      'refresh_token': token.refreshToken,
+    };
+    final Token reToken = await refresh(basePath, data);
+    expect(reToken.id, 1);
+
+  });
 
 
 
