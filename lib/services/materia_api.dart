@@ -14,11 +14,11 @@ Future<Token> signIn(String basePath, Map<String, dynamic> data) async {
   return Token.fromJson(json.decode(response.body));
 }
 
-//Future<Token> refresh(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'refresh');
-//  final http.Response response = await post(path, data);
-//  return Token.fromJson(json.decode(response.body));
-//}
+Future<Token> refresh(String basePath, Map<String, dynamic> data) async {
+  final String path = p.join(basePath, 'refresh');
+  final http.Response response = await post(path, data);
+  return Token.fromJson(json.decode(response.body));
+}
 //
 //Future<User> tmpRegistration(String basePath, Map<String, dynamic> data) async {
 //  final String path = p.join(basePath, 'tmp-registration');
