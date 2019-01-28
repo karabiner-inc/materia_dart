@@ -10,7 +10,7 @@ class User{
         role: json['role'],
         iconImgUrl: json['icon_img_url'],
         email: json['email'],
-        addresses: json['addresses'].map((Map<String, dynamic> address)=>Address.fromJson(address)).toList()
+        addresses: json['addresses'].isEmpty ? [] : json['addresses'].map((Map<String, dynamic> address)=>Address.fromJson(address)).toList()
     );
   }
 
