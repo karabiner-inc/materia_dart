@@ -33,13 +33,14 @@ Future<PasswordResetToken> requestPasswordReset(String basePath, Map<String, dyn
   final http.Response response = await post(path, data);
   return PasswordResetToken.fromJson(json.decode(response.body));
 }
-//
-//// tmp_user_auth
-//Future<User> varidationTmpUser(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'varidation-tmp-user');
-//  final http.Response response = await get(path);
-//  return User.fromJson(json.decode(response.body));
-//}
+
+// tmp_user_auth
+Future<Map<String, dynamic>> validationTmpUser(String basePath, Map<String, dynamic> data, String token) async {
+  final String path = p.join(basePath, 'validation-tmp-user');
+  final http.Response response = await get(path, token: token);
+  return json.decode(response.body);
+}
+
 //
 //Future<User> userRegistration(String basePath, Map<String, dynamic> data) async {
 //  final String path = p.join(basePath, 'user-registration');
