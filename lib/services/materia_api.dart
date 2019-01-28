@@ -6,6 +6,7 @@ import '../models/materia/account.dart';
 import '../models/materia/token.dart';
 import '../models/materia/user.dart';
 import '../models/materia/tmp_token.dart';
+import '../models/materia/password_reset_token.dart';
 import './base_api.dart';
 
 // no auth
@@ -26,12 +27,12 @@ Future<TmpToken> tmpRegistration(String basePath, Map<String, dynamic> data) asy
   final http.Response response = await post(path, data);
   return TmpToken.fromJson(json.decode(response.body));
 }
-//
-//Future<User> requestPasswordReset(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'request-password-reset');
-//  final http.Response response = await post(path, data);
-//  return User.fromJson(json.decode(response.body));
-//}
+
+Future<PasswordResetToken> requestPasswordReset(String basePath, Map<String, dynamic> data) async {
+  final String path = p.join(basePath, 'request-password-reset');
+  final http.Response response = await post(path, data);
+  return PasswordResetToken.fromJson(json.decode(response.body));
+}
 //
 //// tmp_user_auth
 //Future<User> varidationTmpUser(String basePath, Map<String, dynamic> data) async {
