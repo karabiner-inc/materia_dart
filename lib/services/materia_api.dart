@@ -85,6 +85,11 @@ Future<List<Grant>> getByRole(String basePath, dynamic data, String token) async
 Future<dynamic> signOut(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'sign-out');
   final http.Response response = await post(path, data, token: token);
-  print(json.decode(response.body));
+  return json.decode(response.body);
+}
+
+Future<dynamic> authCheck(String basePath, String token) async {
+  final String path = p.join(basePath, 'auth-check');
+  final http.Response response = await get(path, token: token);
   return json.decode(response.body);
 }

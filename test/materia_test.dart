@@ -168,4 +168,14 @@ void main() {
     final dynamic result = await signOut(basePath, requestData,  token.accessToken);
     expect(result['ok'], true);
   });
+
+  test('auth-check', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+    final dynamic result = await authCheck(basePath, token.accessToken);
+    expect(result['message'], 'authenticated');
+  });
 }
