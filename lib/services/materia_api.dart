@@ -93,3 +93,10 @@ Future<dynamic> authCheck(String basePath, String token) async {
   final http.Response response = await get(path, token: token);
   return json.decode(response.body);
 }
+
+Future<List<User>> searchUsers(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'search-users');
+  final http.Response response = await post(path, data, token: token);
+  final List<dynamic> decodeResponse = json.decode(response.body);
+  return decodeResponse.map((dynamic json) => User.fromJson(json)).toList();
+}

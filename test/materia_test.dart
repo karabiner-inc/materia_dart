@@ -16,6 +16,16 @@ const String basePath='http://localhost:4001/api';
 
 void main() {
 
+  Token accsessToken;
+
+  setUpAll(() async{
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    accsessToken = await signIn(basePath, data);
+  });
+
   test('signIn', () async {
     var data = {
       'email': 'hogehoge@example.com',
@@ -51,7 +61,6 @@ void main() {
     };
     final TmpToken tmpToken = await tmpRegistration(basePath, data);
     expect(tmpToken.user.email, email);
-
 
   });
 
@@ -136,25 +145,15 @@ void main() {
   });
 
   test('show me', () async {
-    var data = {
-      'email': 'hogehoge@example.com',
-      'password': 'hogehoge',
-    };
-    final Token token = await signIn(basePath, data);
-    final User user = await showMe(basePath, token.accessToken);
+    final User user = await showMe(basePath, accsessToken.accessToken);
     expect(user.email, 'hogehoge@example.com');
   });
 
   test('get_by_role', () async {
-    var data = {
-      'email': 'hogehoge@example.com',
-      'password': 'hogehoge',
-    };
-    final Token token = await signIn(basePath, data);
     var role = {
       'role': 'anybody'
     };
-    final List<Grant> grants = await getByRole(basePath, role,  token.accessToken);
+    final List<Grant> grants = await getByRole(basePath, role,  accsessToken.accessToken);
     expect(grants[0].role, 'anybody');
   });
 
@@ -170,12 +169,13 @@ void main() {
   });
 
   test('auth-check', () async {
-    var data = {
-      'email': 'hogehoge@example.com',
-      'password': 'hogehoge',
-    };
-    final Token token = await signIn(basePath, data);
-    final dynamic result = await authCheck(basePath, token.accessToken);
+    final dynamic result = await authCheck(basePath, accsessToken.accessToken);
     expect(result['message'], 'authenticated');
+  });
+
+  test('search-users', () async {
+    final Map<String, dynamic> requestData = Map<String, dynamic>();
+    final List<User> result = await searchUsers(basePath, requestData,  accsessToken.accessToken);
+    expect(result.isNotEmpty, true);
   });
 }
