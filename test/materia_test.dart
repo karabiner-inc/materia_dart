@@ -134,4 +134,14 @@ void main() {
     expect(user.email, 'hogehoge@example.com');
   });
 
+  test('show me', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+    final User user = await showMe(basePath, token.accessToken);
+    expect(user.email, 'hogehoge@example.com');
+  });
+
 }

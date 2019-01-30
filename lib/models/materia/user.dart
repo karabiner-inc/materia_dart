@@ -7,9 +7,6 @@ class User{
 
   factory User.fromJson(dynamic json) {
 
-//    print(json['organization']);
-//    print(Organization.fromListJson(json['organization']));
-
     return User(
         id: json['id'],
         name: json['name'],

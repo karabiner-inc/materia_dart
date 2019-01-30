@@ -66,3 +66,10 @@ Future<User> resetMyPassword(String basePath, Map<String, dynamic> data, String 
   final http.Response response = await post(path, data, token: token);
   return User.fromJson(json.decode(response.body));
 }
+
+// guardian_auth
+Future<User> showMe(String basePath, String token) async {
+  final String path = p.join(basePath, 'user');
+  final http.Response response = await get(path, token: token);
+  return User.fromJson(json.decode(response.body));
+}
