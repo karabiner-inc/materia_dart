@@ -77,6 +77,24 @@ void main() {
     expect(result['message'], 'authenticated');
   });
 
+  test('user-registration', () async {
+    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String email = 'hogehoge$timestamp@example.com';
+    var data = {
+      'email': email,
+      'role': 'test',
+    };
+    final TmpToken tmpToken = await tmpRegistration(basePath, data);
+    var createUserData = {
+      'name': 'hogehoge$timestamp',
+      'email': tmpToken.user.email,
+      'password': 'password',
+      'password_confimation': 'password'
+    };
+    final User user = await userRegistration(basePath, createUserData, tmpToken.userRegistrationToken);
+    expect(user.email, tmpToken.user.email);
+  });
+
 
 
 }
