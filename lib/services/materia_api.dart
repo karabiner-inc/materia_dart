@@ -48,12 +48,12 @@ Future<User> userRegistration(String basePath, Map<String, dynamic> data, String
   return User.fromJson(json.decode(response.body));
 }
 
-//Future<User> userRegistrationAndSignIn(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'user-registration-and-sign-in');
-//  final http.Response response = await post(path, data);
-//  return User.fromJson(json.decode(response.body));
-//}
-//
+Future<Map<String, dynamic>> userRegistrationAndSignIn(String basePath, Map<String, dynamic> data, String token) async {
+  final String path = p.join(basePath, 'user-registration-and-sign-in');
+  final http.Response response = await post(path, data, token: token);
+  return json.decode(response.body);
+}
+
 //// pw_reset_auth
 //Future<User> varidationPwReset(String basePath, Map<String, dynamic> data) async {
 //  final String path = p.join(basePath, 'varidation-pw-reset');

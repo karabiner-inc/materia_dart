@@ -95,6 +95,24 @@ void main() {
     expect(user.email, tmpToken.user.email);
   });
 
+  test('user-registration-and-sign-in', () async {
+    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String email = 'hogehoge$timestamp@example.com';
+    var data = {
+      'email': email,
+      'role': 'test',
+    };
+    final TmpToken tmpToken = await tmpRegistration(basePath, data);
+    var createUserData = {
+      'name': 'hogehoge$timestamp',
+      'email': tmpToken.user.email,
+      'password': 'password',
+      'password_confimation': 'password'
+    };
+    final Map<String, dynamic> token = await userRegistrationAndSignIn(basePath, createUserData, tmpToken.userRegistrationToken);
+    expect(token['user']['id'], tmpToken.user.id);
+  });
+
 
 
 }
