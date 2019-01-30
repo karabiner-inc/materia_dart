@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:materia_dart/models/materia/account.dart';
+import 'package:materia_dart/models/materia/grant.dart';
 import 'package:materia_dart/models/materia/token.dart';
 import 'package:materia_dart/models/materia/user.dart';
 import 'package:materia_dart/models/materia/tmp_token.dart';
@@ -144,4 +145,16 @@ void main() {
     expect(user.email, 'hogehoge@example.com');
   });
 
+  test('get_by_role', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+    var role = {
+      'role': 'anybody'
+    };
+    final List<Grant> grants = await getByRole(basePath, role,  token.accessToken);
+    expect(grants[0].role, 'anybody');
+  });
 }

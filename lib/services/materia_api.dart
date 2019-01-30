@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:materia_dart/models/materia/grant.dart';
 import 'package:path/path.dart' as p;
 
 import '../models/materia/account.dart';
@@ -72,4 +73,11 @@ Future<User> showMe(String basePath, String token) async {
   final String path = p.join(basePath, 'user');
   final http.Response response = await get(path, token: token);
   return User.fromJson(json.decode(response.body));
+}
+
+Future<List<Grant>> getByRole(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'grant');
+  final http.Response response = await post(path, data, token: token);
+  final List<dynamic> decodeResponse = json.decode(response.body);
+  return decodeResponse.map((dynamic json) => Grant.fromJson(json)).toList();
 }
