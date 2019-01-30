@@ -157,4 +157,15 @@ void main() {
     final List<Grant> grants = await getByRole(basePath, role,  token.accessToken);
     expect(grants[0].role, 'anybody');
   });
+
+  test('sign out', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+    final Map<String, dynamic> requestData = Map<String, dynamic>();
+    final dynamic result = await signOut(basePath, requestData,  token.accessToken);
+    expect(result['ok'], true);
+  });
 }
