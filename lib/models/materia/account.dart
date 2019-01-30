@@ -16,7 +16,7 @@ class Account {
     this.organization
   });
 
-  factory Account.fromJson(Map<String, dynamic> json) {
+  factory Account.fromJson(dynamic json) {
     return Account(
       id: json['id'],
       externalCode: json['external_code'],

@@ -22,6 +22,14 @@ class Address {
         subject: json['subject']);
   }
 
+  static List<Address> fromListJson(List<dynamic> listJson) {
+    if(listJson.isEmpty) {
+      return [];
+    }
+    return listJson.map((dynamic json) => Address.fromJson(json)).toList();
+  }
+
+
   int id;
   String address1;
   String address2;

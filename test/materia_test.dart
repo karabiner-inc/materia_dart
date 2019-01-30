@@ -113,6 +113,25 @@ void main() {
     expect(token['user']['id'], tmpToken.user.id);
   });
 
+  test('validation-pw-reset', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+    };
+    final PasswordResetToken password = await requestPasswordReset(basePath, data);
+    final Map<String, dynamic> result = await validationPwReset(basePath, password.passwordResetToken);
+    expect(result['message'], 'authenticated');
+  });
 
+  test('reset-my-password', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+    };
+    final PasswordResetToken password = await requestPasswordReset(basePath, data);
+    var rePwdData = {
+      'password': 'hogehoge'
+    };
+    final User user = await resetMyPassword(basePath, rePwdData, password.passwordResetToken);
+    expect(user.email, 'hogehoge@example.com');
+  });
 
 }

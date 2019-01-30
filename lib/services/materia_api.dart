@@ -55,14 +55,14 @@ Future<Map<String, dynamic>> userRegistrationAndSignIn(String basePath, Map<Stri
 }
 
 //// pw_reset_auth
-//Future<User> varidationPwReset(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'varidation-pw-reset');
-//  final http.Response response = await get(path);
-//  return User.fromJson(json.decode(response.body));
-//}
-//
-//Future<User> resetMyPassword(String basePath, Map<String, dynamic> data) async {
-//  final String path = p.join(basePath, 'reset-my-password');
-//  final http.Response response = await post(path, data);
-//  return User.fromJson(json.decode(response.body));
-//}
+Future<Map<String, dynamic>> validationPwReset(String basePath, String token) async {
+  final String path = p.join(basePath, 'validation-pw-reset');
+  final http.Response response = await get(path, token: token);
+  return json.decode(response.body);
+}
+
+Future<User> resetMyPassword(String basePath, Map<String, dynamic> data, String token) async {
+  final String path = p.join(basePath, 'reset-my-password');
+  final http.Response response = await post(path, data, token: token);
+  return User.fromJson(json.decode(response.body));
+}

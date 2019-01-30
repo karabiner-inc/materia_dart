@@ -2,7 +2,7 @@ class Token {
 
   Token({this.id, this.accessToken, this.refreshToken});
 
-  factory Token.fromJson(Map<String, dynamic> json) {
+  factory Token.fromJson(dynamic json) {
     return Token(
       id: json['id'],
       accessToken: json['access_token'],

@@ -11,14 +11,24 @@ class Organization {
         this.users,
         });
 
-  factory Organization.fromJson(Map<String, dynamic> json) {
+  factory Organization.fromJson(dynamic json) {
+    if(json == null) {
+      return Organization();
+    }
     return Organization(
         name: json['name'] ?? '',
         hpUrl: json['hp_url'] ?? '',
         profileImgUrl: json['profile_img_url'] ?? '',
         backGroundImgUrl: json['back_ground_img_url'] ?? '',
         oneLineMessage: json['one_line_message'] ?? '',
-        users: json['users'] == null ? [] : json['users'].map((Map<String, dynamic> user) => User.fromJson(user)));
+        users: json['users'] == null ? [] : json['users'].map((dynamic user) => User.fromJson(user)));
+  }
+
+  static List<Organization> fromListJson(List<dynamic> listJson) {
+    if(listJson.isEmpty) {
+      return [];
+    }
+    return listJson.map((dynamic json) => Organization.fromJson(json)).toList();
   }
 
   String name;
