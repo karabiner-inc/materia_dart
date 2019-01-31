@@ -11,6 +11,7 @@ import 'package:materia_dart/models/materia/password_reset_token.dart';
 import 'package:materia_dart/services/materia_api.dart';
 
 const String basePath='http://localhost:4001/api';
+const String basePathOps='http://localhost:4001/api/ops';
 
 
 // You need run MIX_ENV=test mix phx.server if you test.
@@ -336,6 +337,66 @@ void main() {
   test('my-account', () async {
     final Account result = await getMyAccount(basePath, accsessTokenForAccount.accessToken);
     expect(result.name, 'hogehoge account');
+  });
+
+  test('create and get grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result1.role, 'anybody$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Grant result2 = await getGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.role, 'anybody$timestamp');
+  });
+
+  test('get grants', () async {
+    final List<Grant> result3 = await getGrants(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'role': 'anybody$timestamp',
+      'method': 'GET',
+      'request_path': '/api/test'
+    };
+    final Grant result2 = await updateGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.method, 'GET');
+
+  });
+
+  test('create and delete grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteGrant(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
   });
 
 }

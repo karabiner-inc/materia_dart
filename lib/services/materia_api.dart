@@ -190,3 +190,37 @@ Future<Account> getMyAccount(String basePath, String token) async {
   final http.Response response = await get(path, token: token);
   return Account.fromJson(json.decode(response.body));
 }
+
+// Grants
+Future<List<Grant>> getGrants(String basePath, String token) async {
+  final String path = p.join(basePath, 'grants');
+  final http.Response response = await get(path, token: token);
+  return Grant.fromListJson(json.decode(response.body));
+}
+
+Future<Grant> getGrant(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'grants/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return Grant.fromJson(json.decode(response.body));
+}
+
+Future<Grant> createGrant(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'grants');
+  final http.Response response = await post(path, data, token: token);
+  return Grant.fromJson(json.decode(response.body));
+}
+
+Future<Grant> updateGrant(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'grants/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return Grant.fromJson(json.decode(response.body));
+}
+
+Future<bool> deleteGrant(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'grants/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}
