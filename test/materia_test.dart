@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:materia_dart/models/materia/account.dart';
+import 'package:materia_dart/models/materia/address.dart';
 import 'package:materia_dart/models/materia/grant.dart';
 import 'package:materia_dart/models/materia/token.dart';
 import 'package:materia_dart/models/materia/user.dart';
@@ -178,4 +179,58 @@ void main() {
     final List<User> result = await searchUsers(basePath, requestData,  accsessToken.accessToken);
     expect(result.isNotEmpty, true);
   });
+
+  test('create and get address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Address result2 = await getAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.address1, 'test1');
+
+    final List<Address> result3 = await getAddresses(basePath, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+
+    requestData = {
+      'id': result1.id,
+      'address1': 'test2',
+      'subject': 'address'
+    };
+    final Address result2 = await updateAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.address1, 'test2');
+
+  });
+
+  test('create and delete address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteAddress(basePath, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+
 }

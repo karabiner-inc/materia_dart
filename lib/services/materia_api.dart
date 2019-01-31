@@ -4,6 +4,7 @@ import 'package:materia_dart/models/materia/grant.dart';
 import 'package:path/path.dart' as p;
 
 import '../models/materia/account.dart';
+import '../models/materia/address.dart';
 import '../models/materia/token.dart';
 import '../models/materia/user.dart';
 import '../models/materia/tmp_token.dart';
@@ -99,4 +100,36 @@ Future<List<User>> searchUsers(String basePath, dynamic data, String token) asyn
   final http.Response response = await post(path, data, token: token);
   final List<dynamic> decodeResponse = json.decode(response.body);
   return decodeResponse.map((dynamic json) => User.fromJson(json)).toList();
+}
+
+
+Future<List<Address>> getAddresses(String basePath, String token) async {
+  final String path = p.join(basePath, 'addresses');
+  final http.Response response = await get(path, token: token);
+  return Address.fromListJson(json.decode(response.body));
+}
+
+Future<Address> getAddress(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'addresses/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return Address.fromJson(json.decode(response.body));
+}
+
+Future<Address> createAddress(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'addresses');
+  final http.Response response = await post(path, data, token: token);
+  return Address.fromJson(json.decode(response.body));
+}
+Future<Address> updateAddress(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'addresses/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return Address.fromJson(json.decode(response.body));
+}
+Future<bool> deleteAddress(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'addresses/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
 }
