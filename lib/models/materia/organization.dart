@@ -21,7 +21,7 @@ class Organization {
         profileImgUrl: json['profile_img_url'] ?? '',
         backGroundImgUrl: json['back_ground_img_url'] ?? '',
         oneLineMessage: json['one_line_message'] ?? '',
-        users: json['users'] == null ? [] : json['users'].map((dynamic user) => User.fromJson(user)));
+        users: User.fromListJson(json['users']));
   }
 
   static List<Organization> fromListJson(List<dynamic> listJson) {

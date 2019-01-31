@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:materia_dart/models/materia/account.dart';
+import 'package:materia_dart/models/materia/address.dart';
+import 'package:materia_dart/models/materia/grant.dart';
 import 'package:materia_dart/models/materia/token.dart';
 import 'package:materia_dart/models/materia/user.dart';
 import 'package:materia_dart/models/materia/tmp_token.dart';
@@ -14,6 +16,19 @@ const String basePath='http://localhost:4001/api';
 // You need run MIX_ENV=test mix phx.server if you test.
 
 void main() {
+
+  Token accsessToken;
+
+  String _timestamp() => (DateTime.now().millisecondsSinceEpoch + 1).toString();
+
+
+  setUpAll(() async{
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    accsessToken = await signIn(basePath, data);
+  });
 
   test('signIn', () async {
     var data = {
@@ -42,7 +57,7 @@ void main() {
 
   test('tmp-registration', () async {
 
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -50,7 +65,6 @@ void main() {
     };
     final TmpToken tmpToken = await tmpRegistration(basePath, data);
     expect(tmpToken.user.email, email);
-
 
   });
 
@@ -63,7 +77,7 @@ void main() {
   });
 
   test('validation-tmp-user', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -78,7 +92,7 @@ void main() {
   });
 
   test('user-registration', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -96,7 +110,7 @@ void main() {
   });
 
   test('user-registration-and-sign-in', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -133,5 +147,170 @@ void main() {
     final User user = await resetMyPassword(basePath, rePwdData, password.passwordResetToken);
     expect(user.email, 'hogehoge@example.com');
   });
+
+  test('show me', () async {
+    final User user = await showMe(basePath, accsessToken.accessToken);
+    expect(user.email, 'hogehoge@example.com');
+  });
+
+  test('get_by_role', () async {
+    var role = {
+      'role': 'anybody'
+    };
+    final List<Grant> grants = await getByRole(basePath, role,  accsessToken.accessToken);
+    expect(grants[0].role, 'anybody');
+  });
+
+  test('sign out', () async {
+    var data = {
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signIn(basePath, data);
+    final Map<String, dynamic> requestData = Map<String, dynamic>();
+    final dynamic result = await signOut(basePath, requestData,  token.accessToken);
+    expect(result['ok'], true);
+  });
+
+  test('auth-check', () async {
+    final dynamic result = await authCheck(basePath, accsessToken.accessToken);
+    expect(result['message'], 'authenticated');
+  });
+
+  test('search-users', () async {
+    final Map<String, dynamic> requestData = Map<String, dynamic>();
+    final List<User> result = await searchUsers(basePath, requestData,  accsessToken.accessToken);
+    expect(result.isNotEmpty, true);
+  });
+
+  test('create and get address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Address result2 = await getAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.address1, 'test1');
+
+    final List<Address> result3 = await getAddresses(basePath, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+
+    requestData = {
+      'id': result1.id,
+      'address1': 'test2',
+      'subject': 'address'
+    };
+    final Address result2 = await updateAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.address1, 'test2');
+
+  });
+
+  test('create and delete address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteAddress(basePath, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  test('create my address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createMyAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+  });
+
+  test('create and get account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.externalCode, 'test$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Account result2 = await getAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'test1');
+  });
+
+  test('get accounts', () async {
+    final List<Account> result3 = await getAccounts(basePath, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'test2',
+      'external_code': 'update_test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result2 = await updateAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'test2');
+    expect(result2.externalCode, 'update_test$timestamp');
+
+  });
+
+  test('create and delete account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteAccount(basePath, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  test('search-accounts', () async {
+    final dynamic requestData = Map<String, dynamic>();
+    final List<Account> result = await searchAccounts(basePath, requestData,  accsessToken.accessToken);
+    expect(result.isNotEmpty, true);
+  });
+
 
 }

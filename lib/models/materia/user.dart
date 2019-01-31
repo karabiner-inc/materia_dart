@@ -6,10 +6,9 @@ class User{
 
 
   factory User.fromJson(dynamic json) {
-
-//    print(json['organization']);
-//    print(Organization.fromListJson(json['organization']));
-
+    if (json == null) {
+      return User();
+    }
     return User(
         id: json['id'],
         name: json['name'],
@@ -21,6 +20,13 @@ class User{
 //        organization: Organization.fromListJson(json['organization']),
         addresses: Address.fromListJson(json['addresses'])
     );
+  }
+
+  static List<User> fromListJson(List<dynamic> listJson) {
+    if(listJson.isEmpty) {
+      return [];
+    }
+    return listJson.map((dynamic json) => User.fromJson(json)).toList();
   }
 
   int id;
