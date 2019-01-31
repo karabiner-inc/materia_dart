@@ -178,3 +178,15 @@ Future<List<Account>> searchAccounts(String basePath, dynamic data, String token
   final http.Response response = await post(path, data, token: token);
   return Account.fromListJson(json.decode(response.body));
 }
+
+Future<Token> signInWithAccount(String basePath, Map<String, dynamic> data) async {
+  final String path = p.join(basePath, 'sign-in');
+  final http.Response response = await post(path, data);
+  return Token.fromJson(json.decode(response.body));
+}
+
+Future<Account> getMyAccount(String basePath, String token) async {
+  final String path = p.join(basePath, 'my-account');
+  final http.Response response = await get(path, token: token);
+  return Account.fromJson(json.decode(response.body));
+}

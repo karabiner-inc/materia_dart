@@ -18,6 +18,8 @@ const String basePath='http://localhost:4001/api';
 void main() {
 
   Token accsessToken;
+  Token accsessTokenForAccount;
+
 
   String _timestamp() => (DateTime.now().millisecondsSinceEpoch + 1).toString();
 
@@ -28,14 +30,32 @@ void main() {
       'password': 'hogehoge',
     };
     accsessToken = await signIn(basePath, data);
+    data = {
+      'account': 'hogehoge_code',
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    accsessTokenForAccount = await signInWithAccount(basePath, data);
+
+
   });
 
-  test('signIn', () async {
+  test('signIn with User', () async {
     var data = {
       'email': 'hogehoge@example.com',
       'password': 'hogehoge',
     };
     final Token token = await signIn(basePath, data);
+    expect(token.id, 1);
+  });
+
+  test('signIn with Account', () async {
+    var data = {
+      'account': 'hogehoge_code',
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signInWithAccount(basePath, data);
     expect(token.id, 1);
   });
 
@@ -312,5 +332,10 @@ void main() {
     expect(result.isNotEmpty, true);
   });
 
+
+  test('my-account', () async {
+    final Account result = await getMyAccount(basePath, accsessTokenForAccount.accessToken);
+    expect(result.name, 'hogehoge account');
+  });
 
 }
