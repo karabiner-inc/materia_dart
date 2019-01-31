@@ -1,2 +1,2 @@
 library materia_dart;
-export './services/materia_api.dart';
+export 'src/services/materia_api.dart';

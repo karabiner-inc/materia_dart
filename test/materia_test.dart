@@ -1,16 +1,16 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
-import 'package:materia_dart/models/materia/account.dart';
-import 'package:materia_dart/models/materia/address.dart';
-import 'package:materia_dart/models/materia/organization.dart';
-import 'package:materia_dart/models/materia/grant.dart';
-import 'package:materia_dart/models/materia/mail_template.dart';
-import 'package:materia_dart/models/materia/token.dart';
-import 'package:materia_dart/models/materia/user.dart';
-import 'package:materia_dart/models/materia/tmp_token.dart';
-import 'package:materia_dart/models/materia/password_reset_token.dart';
+import 'package:materia_dart/src/models/materia/account.dart';
+import 'package:materia_dart/src/models/materia/address.dart';
+import 'package:materia_dart/src/models/materia/organization.dart';
+import 'package:materia_dart/src/models/materia/grant.dart';
+import 'package:materia_dart/src/models/materia/mail_template.dart';
+import 'package:materia_dart/src/models/materia/token.dart';
+import 'package:materia_dart/src/models/materia/user.dart';
+import 'package:materia_dart/src/models/materia/tmp_token.dart';
+import 'package:materia_dart/src/models/materia/password_reset_token.dart';
 
-import 'package:materia_dart/services/materia_api.dart';
+import 'package:materia_dart/src/services/materia_api.dart';
 
 const String basePath='http://localhost:4001/api';
 const String basePathOps='http://localhost:4001/api/ops';
