@@ -19,6 +19,9 @@ void main() {
 
   Token accsessToken;
 
+  String _timestamp() => (DateTime.now().millisecondsSinceEpoch + 1).toString();
+
+
   setUpAll(() async{
     var data = {
       'email': 'hogehoge@example.com',
@@ -54,7 +57,7 @@ void main() {
 
   test('tmp-registration', () async {
 
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -74,7 +77,7 @@ void main() {
   });
 
   test('validation-tmp-user', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -89,7 +92,7 @@ void main() {
   });
 
   test('user-registration', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -107,7 +110,7 @@ void main() {
   });
 
   test('user-registration-and-sign-in', () async {
-    final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String timestamp = _timestamp();
     final String email = 'hogehoge$timestamp@example.com';
     var data = {
       'email': email,
@@ -240,6 +243,67 @@ void main() {
     final Address result1 = await createMyAddress(basePath, requestData,  accsessToken.accessToken);
     expect(result1.address1, 'test1');
 
+  });
+
+  test('create and get account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.externalCode, 'test$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Account result2 = await getAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'test1');
+  });
+
+  test('get accounts', () async {
+    final List<Account> result3 = await getAccounts(basePath, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'test2',
+      'external_code': 'update_test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result2 = await updateAccount(basePath, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'test2');
+    expect(result2.externalCode, 'update_test$timestamp');
+
+  });
+
+  test('create and delete account', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'test1',
+      'external_code': 'test$timestamp',
+      'start_date': '2019-01-01T12:00:00Z'
+    };
+    final Account result1 = await createAccount(basePath, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteAccount(basePath, requestData, accsessToken.accessToken);
+    expect(result2, true);
   });
 
 

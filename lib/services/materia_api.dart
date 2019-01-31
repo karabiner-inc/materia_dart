@@ -141,3 +141,36 @@ Future<Address> createMyAddress(String basePath, dynamic data, String token) asy
   final http.Response response = await post(path, data, token: token);
   return Address.fromJson(json.decode(response.body));
 }
+
+Future<List<Account>> getAccounts(String basePath, String token) async {
+  final String path = p.join(basePath, 'accounts');
+  final http.Response response = await get(path, token: token);
+  return Account.fromListJson(json.decode(response.body));
+}
+
+Future<Account> getAccount(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'accounts/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return Account.fromJson(json.decode(response.body));
+}
+
+Future<Account> createAccount(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'accounts');
+  final http.Response response = await post(path, data, token: token);
+  return Account.fromJson(json.decode(response.body));
+}
+
+Future<Account> updateAccount(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'accounts/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return Account.fromJson(json.decode(response.body));
+}
+
+Future<bool> deleteAccount(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'accounts/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}

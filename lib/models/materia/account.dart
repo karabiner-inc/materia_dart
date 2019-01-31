@@ -5,6 +5,7 @@ class Account {
 
   Account({
     this.id,
+    this.name,
     this.externalCode,
     this.startDatetime,
     this.frozenDatetime,
@@ -19,6 +20,7 @@ class Account {
   factory Account.fromJson(dynamic json) {
     return Account(
       id: json['id'],
+      name: json['name'],
       externalCode: json['external_code'],
       startDatetime: json['start_datetime'],
       frozenDatetime: json['frozen_datetime'],
@@ -26,13 +28,21 @@ class Account {
       descriptions: json['descriptions'],
       status: json['status'],
       lockVersion: json['lock_version'],
-      mainUser: json['main_user'],
-      organization: json['organization'],
+      mainUser: User.fromJson(json['main_user']),
+      organization: Organization.fromJson(json['organization']),
 
     );
   }
 
+  static List<Account> fromListJson(List<dynamic> listJson) {
+    if(listJson.isEmpty) {
+      return [];
+    }
+    return listJson.map((dynamic json) => Account.fromJson(json)).toList();
+  }
+
   int id;
+  String name;
   String externalCode;
   String startDatetime;
   String frozenDatetime;
