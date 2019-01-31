@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:materia_dart/models/materia/grant.dart';
-import 'package:materia_dart/models/materia/mail_template.dart';
 import 'package:path/path.dart' as p;
 
 import '../models/materia/account.dart';
 import '../models/materia/address.dart';
 import '../models/materia/token.dart';
 import '../models/materia/user.dart';
+import '../models/materia/grant.dart';
+import '../models/materia/mail_template.dart';
+import '../models/materia/organization.dart';
 import '../models/materia/tmp_token.dart';
 import '../models/materia/password_reset_token.dart';
 import './base_api.dart';
@@ -287,6 +288,40 @@ Future<User> updateUser(String basePath, dynamic data, String token) async {
 
 Future<bool> deleteUser(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'users/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}
+
+// Organization
+Future<List<Organization>> getOrganizations(String basePath, String token) async {
+  final String path = p.join(basePath, 'organizations');
+  final http.Response response = await get(path, token: token);
+  return Organization.fromListJson(json.decode(response.body));
+}
+
+Future<Organization> getOrganization(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'organizations/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return Organization.fromJson(json.decode(response.body));
+}
+
+Future<Organization> createOrganization(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'organizations');
+  final http.Response response = await post(path, data, token: token);
+  return Organization.fromJson(json.decode(response.body));
+}
+
+Future<Organization> updateOrganization(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'organizations/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return Organization.fromJson(json.decode(response.body));
+}
+
+Future<bool> deleteOrganization(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'organizations/${data['id']}');
   final http.Response response = await delete(path, token: token);
   if(response.statusCode == 204) {
     return true;

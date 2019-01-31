@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:materia_dart/models/materia/account.dart';
 import 'package:materia_dart/models/materia/address.dart';
+import 'package:materia_dart/models/materia/organization.dart';
 import 'package:materia_dart/models/materia/grant.dart';
 import 'package:materia_dart/models/materia/mail_template.dart';
 import 'package:materia_dart/models/materia/token.dart';
@@ -476,7 +477,6 @@ void main() {
       'role': 'client'
     };
     final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
-    print(result1);
 
     expect(result1.name, 'hogehoge$timestamp');
 
@@ -531,6 +531,60 @@ void main() {
       'id': result1.id,
     };
     final bool result2 = await deleteUser(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  // Organizations
+  test('create and get organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+
+    expect(result1.name, 'hogehoge$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Organization result2 = await getOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'hogehoge$timestamp');
+  });
+
+  test('get organizations', () async {
+    final List<Organization> result3 = await getOrganizations(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'updatehogehoge$timestamp',
+    };
+    final Organization result2 = await updateOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'updatehogehoge$timestamp');
+
+  });
+
+  test('create and delete organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteOrganization(basePathOps, requestData, accsessToken.accessToken);
     expect(result2, true);
   });
 }
