@@ -464,4 +464,73 @@ void main() {
     expect(result2, true);
   });
 
+  //  Users
+  test('create and get users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+    print(result1);
+
+    expect(result1.name, 'hogehoge$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final User result2 = await getUser(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'hogehoge$timestamp');
+  });
+
+  test('get users', () async {
+    final List<User> result3 = await getUsers(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'updatehogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password'
+    };
+    final User result2 = await updateUser(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'updatehogehoge$timestamp');
+
+  });
+
+  test('create and delete users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteUser(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
 }

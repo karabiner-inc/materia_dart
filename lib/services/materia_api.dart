@@ -259,3 +259,37 @@ Future<bool> deleteMailTemplate(String basePath, dynamic data, String token) asy
   }
   return false;
 }
+
+// User
+Future<List<User>> getUsers(String basePath, String token) async {
+  final String path = p.join(basePath, 'users');
+  final http.Response response = await get(path, token: token);
+  return User.fromListJson(json.decode(response.body));
+}
+
+Future<User> getUser(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'users/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return User.fromJson(json.decode(response.body));
+}
+
+Future<User> createUser(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'users');
+  final http.Response response = await post(path, data, token: token);
+  return User.fromJson(json.decode(response.body));
+}
+
+Future<User> updateUser(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'users/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return User.fromJson(json.decode(response.body));
+}
+
+Future<bool> deleteUser(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'users/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}
