@@ -232,5 +232,15 @@ void main() {
     expect(result2, true);
   });
 
+  test('create my address', () async {
+    dynamic requestData = {
+      'address1': 'test1',
+      'subject': 'address'
+    };
+    final Address result1 = await createMyAddress(basePath, requestData,  accsessToken.accessToken);
+    expect(result1.address1, 'test1');
+
+  });
+
 
 }

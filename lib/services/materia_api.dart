@@ -120,11 +120,13 @@ Future<Address> createAddress(String basePath, dynamic data, String token) async
   final http.Response response = await post(path, data, token: token);
   return Address.fromJson(json.decode(response.body));
 }
+
 Future<Address> updateAddress(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'addresses/${data['id']}');
   final http.Response response = await put(path, data, token: token);
   return Address.fromJson(json.decode(response.body));
 }
+
 Future<bool> deleteAddress(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'addresses/${data['id']}');
   final http.Response response = await delete(path, token: token);
@@ -132,4 +134,10 @@ Future<bool> deleteAddress(String basePath, dynamic data, String token) async {
     return true;
   }
   return false;
+}
+
+Future<Address> createMyAddress(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'create-my-address');
+  final http.Response response = await post(path, data, token: token);
+  return Address.fromJson(json.decode(response.body));
 }
