@@ -79,8 +79,7 @@ Future<User> showMe(String basePath, String token) async {
 Future<List<Grant>> getByRole(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'grant');
   final http.Response response = await post(path, data, token: token);
-  final List<dynamic> decodeResponse = json.decode(response.body);
-  return decodeResponse.map((dynamic json) => Grant.fromJson(json)).toList();
+  return Grant.fromListJson(json.decode(response.body));
 }
 
 Future<dynamic> signOut(String basePath, dynamic data, String token) async {
@@ -98,8 +97,7 @@ Future<dynamic> authCheck(String basePath, String token) async {
 Future<List<User>> searchUsers(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'search-users');
   final http.Response response = await post(path, data, token: token);
-  final List<dynamic> decodeResponse = json.decode(response.body);
-  return decodeResponse.map((dynamic json) => User.fromJson(json)).toList();
+  return User.fromListJson(json.decode(response.body));
 }
 
 
@@ -173,4 +171,10 @@ Future<bool> deleteAccount(String basePath, dynamic data, String token) async {
     return true;
   }
   return false;
+}
+
+Future<List<Account>> searchAccounts(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'search-accounts');
+  final http.Response response = await post(path, data, token: token);
+  return Account.fromListJson(json.decode(response.body));
 }

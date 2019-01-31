@@ -11,6 +11,13 @@ class Grant {
     );
   }
 
+  static List<Grant> fromListJson(List<dynamic> listJson) {
+    if(listJson.isEmpty) {
+      return [];
+    }
+    return listJson.map((dynamic json) => Grant.fromJson(json)).toList();
+  }
+
   int id;
   String role;
   String method;

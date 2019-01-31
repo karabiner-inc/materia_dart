@@ -306,5 +306,11 @@ void main() {
     expect(result2, true);
   });
 
+  test('search-accounts', () async {
+    final dynamic requestData = Map<String, dynamic>();
+    final List<Account> result = await searchAccounts(basePath, requestData,  accsessToken.accessToken);
+    expect(result.isNotEmpty, true);
+  });
+
 
 }
