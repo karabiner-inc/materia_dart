@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:materia_dart/models/materia/grant.dart';
+import 'package:materia_dart/models/materia/mail_template.dart';
 import 'package:path/path.dart' as p;
 
 import '../models/materia/account.dart';
@@ -218,6 +219,40 @@ Future<Grant> updateGrant(String basePath, dynamic data, String token) async {
 
 Future<bool> deleteGrant(String basePath, dynamic data, String token) async {
   final String path = p.join(basePath, 'grants/${data['id']}');
+  final http.Response response = await delete(path, token: token);
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}
+
+// MailTemplate
+Future<List<MailTemplate>> getMailTemplates(String basePath, String token) async {
+  final String path = p.join(basePath, 'mail-templates');
+  final http.Response response = await get(path, token: token);
+  return MailTemplate.fromListJson(json.decode(response.body));
+}
+
+Future<MailTemplate> getMailTemplate(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'mail-templates/${data['id']}');
+  final http.Response response = await get(path, token: token);
+  return MailTemplate.fromJson(json.decode(response.body));
+}
+
+Future<MailTemplate> createMailTemplate(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'mail-templates');
+  final http.Response response = await post(path, data, token: token);
+  return MailTemplate.fromJson(json.decode(response.body));
+}
+
+Future<MailTemplate> updateMailTemplate(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'mail-templates/${data['id']}');
+  final http.Response response = await put(path, data, token: token);
+  return MailTemplate.fromJson(json.decode(response.body));
+}
+
+Future<bool> deleteMailTemplate(String basePath, dynamic data, String token) async {
+  final String path = p.join(basePath, 'mail-templates/${data['id']}');
   final http.Response response = await delete(path, token: token);
   if(response.statusCode == 204) {
     return true;

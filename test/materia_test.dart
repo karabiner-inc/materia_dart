@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:materia_dart/models/materia/account.dart';
 import 'package:materia_dart/models/materia/address.dart';
 import 'package:materia_dart/models/materia/grant.dart';
+import 'package:materia_dart/models/materia/mail_template.dart';
 import 'package:materia_dart/models/materia/token.dart';
 import 'package:materia_dart/models/materia/user.dart';
 import 'package:materia_dart/models/materia/tmp_token.dart';
@@ -339,6 +340,8 @@ void main() {
     expect(result.name, 'hogehoge account');
   });
 
+//  Grant
+
   test('create and get grant', () async {
     final String timestamp = _timestamp();
 
@@ -396,6 +399,68 @@ void main() {
       'id': result1.id,
     };
     final bool result2 = await deleteGrant(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  // MailTemplate
+
+  test('create and get mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result1.mailTemplateType, 'test$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final MailTemplate result2 = await getMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.mailTemplateType, 'test$timestamp');
+  });
+
+  test('get mail-templates', () async {
+    final List<MailTemplate> result3 = await getMailTemplates(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'body': 'update testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result2 = await updateMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.body, 'update testbody');
+
+  });
+
+  test('create and delete mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteMailTemplate(basePathOps, requestData, accsessToken.accessToken);
     expect(result2, true);
   });
 
