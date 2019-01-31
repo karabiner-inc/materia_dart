@@ -3,7 +3,9 @@ import './user.dart';
 class Organization {
 
   Organization(
-      {this.name,
+      {
+        this.id,
+        this.name,
         this.hpUrl,
         this.profileImgUrl,
         this.backGroundImgUrl,
@@ -16,6 +18,7 @@ class Organization {
       return Organization();
     }
     return Organization(
+        id: json['id'] ?? '',
         name: json['name'] ?? '',
         hpUrl: json['hp_url'] ?? '',
         profileImgUrl: json['profile_img_url'] ?? '',
@@ -31,6 +34,7 @@ class Organization {
     return listJson.map((dynamic json) => Organization.fromJson(json)).toList();
   }
 
+  int id;
   String name;
   String hpUrl;
   String profileImgUrl;

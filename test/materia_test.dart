@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:materia_dart/models/materia/account.dart';
 import 'package:materia_dart/models/materia/address.dart';
+import 'package:materia_dart/models/materia/organization.dart';
 import 'package:materia_dart/models/materia/grant.dart';
+import 'package:materia_dart/models/materia/mail_template.dart';
 import 'package:materia_dart/models/materia/token.dart';
 import 'package:materia_dart/models/materia/user.dart';
 import 'package:materia_dart/models/materia/tmp_token.dart';
@@ -11,6 +13,7 @@ import 'package:materia_dart/models/materia/password_reset_token.dart';
 import 'package:materia_dart/services/materia_api.dart';
 
 const String basePath='http://localhost:4001/api';
+const String basePathOps='http://localhost:4001/api/ops';
 
 
 // You need run MIX_ENV=test mix phx.server if you test.
@@ -18,6 +21,8 @@ const String basePath='http://localhost:4001/api';
 void main() {
 
   Token accsessToken;
+  Token accsessTokenForAccount;
+
 
   String _timestamp() => (DateTime.now().millisecondsSinceEpoch + 1).toString();
 
@@ -28,14 +33,32 @@ void main() {
       'password': 'hogehoge',
     };
     accsessToken = await signIn(basePath, data);
+    data = {
+      'account': 'hogehoge_code',
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    accsessTokenForAccount = await signInWithAccount(basePath, data);
+
+
   });
 
-  test('signIn', () async {
+  test('signIn with User', () async {
     var data = {
       'email': 'hogehoge@example.com',
       'password': 'hogehoge',
     };
     final Token token = await signIn(basePath, data);
+    expect(token.id, 1);
+  });
+
+  test('signIn with Account', () async {
+    var data = {
+      'account': 'hogehoge_code',
+      'email': 'hogehoge@example.com',
+      'password': 'hogehoge',
+    };
+    final Token token = await signInWithAccount(basePath, data);
     expect(token.id, 1);
   });
 
@@ -313,4 +336,255 @@ void main() {
   });
 
 
+  test('my-account', () async {
+    final Account result = await getMyAccount(basePath, accsessTokenForAccount.accessToken);
+    expect(result.name, 'hogehoge account');
+  });
+
+//  Grant
+
+  test('create and get grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result1.role, 'anybody$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Grant result2 = await getGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.role, 'anybody$timestamp');
+  });
+
+  test('get grants', () async {
+    final List<Grant> result3 = await getGrants(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'role': 'anybody$timestamp',
+      'method': 'GET',
+      'request_path': '/api/test'
+    };
+    final Grant result2 = await updateGrant(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.method, 'GET');
+
+  });
+
+  test('create and delete grant', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'role': 'anybody$timestamp',
+      'method': 'ANY',
+      'request_path': '/api/test'
+    };
+    final Grant result1 = await createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteGrant(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  // MailTemplate
+
+  test('create and get mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result1.mailTemplateType, 'test$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final MailTemplate result2 = await getMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.mailTemplateType, 'test$timestamp');
+  });
+
+  test('get mail-templates', () async {
+    final List<MailTemplate> result3 = await getMailTemplates(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'body': 'update testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result2 = await updateMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.body, 'update testbody');
+
+  });
+
+  test('create and delete mail-templates', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'body': 'testbody',
+      'subject': 'testsubject',
+      'mail_template_type': 'test$timestamp'
+    };
+    final MailTemplate result1 = await createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteMailTemplate(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  //  Users
+  test('create and get users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+
+    expect(result1.name, 'hogehoge$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final User result2 = await getUser(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'hogehoge$timestamp');
+  });
+
+  test('get users', () async {
+    final List<User> result3 = await getUsers(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'updatehogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password'
+    };
+    final User result2 = await updateUser(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'updatehogehoge$timestamp');
+
+  });
+
+  test('create and delete users', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+      'email': 'hogehoge$timestamp@example.com',
+      'password': 'password',
+      'password_confimation': 'password',
+      'role': 'client'
+    };
+    final User result1 = await createUser(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteUser(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
+
+  // Organizations
+  test('create and get organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+
+    expect(result1.name, 'hogehoge$timestamp');
+
+    requestData = {
+      'id': result1.id,
+    };
+    final Organization result2 = await getOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'hogehoge$timestamp');
+  });
+
+  test('get organizations', () async {
+    final List<Organization> result3 = await getOrganizations(basePathOps, accsessToken.accessToken);
+    expect(result3.isNotEmpty, true);
+  });
+
+  test('create and update organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+
+    requestData = {
+      'id': result1.id,
+      'name': 'updatehogehoge$timestamp',
+    };
+    final Organization result2 = await updateOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    expect(result2.name, 'updatehogehoge$timestamp');
+
+  });
+
+  test('create and delete organizations', () async {
+    final String timestamp = _timestamp();
+
+    dynamic requestData = {
+      'name': 'hogehoge$timestamp',
+    };
+    final Organization result1 = await createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    requestData = {
+      'id': result1.id,
+    };
+    final bool result2 = await deleteOrganization(basePathOps, requestData, accsessToken.accessToken);
+    expect(result2, true);
+  });
 }

@@ -23,6 +23,9 @@ class Address {
   }
 
   static List<Address> fromListJson(List<dynamic> listJson) {
+    if(listJson == null) {
+      return [];
+    }
     if(listJson.isEmpty) {
       return [];
     }
