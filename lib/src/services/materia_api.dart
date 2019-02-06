@@ -9,12 +9,10 @@ import '../models/materia/user.dart';
 import '../models/materia/grant.dart';
 import '../models/materia/mail_template.dart';
 import '../models/materia/organization.dart';
-import '../models/materia/tmp_token.dart';
-import '../models/materia/password_reset_token.dart';
+import '../models/materia/response_auth.dart';
 import './base_api.dart';
 
 class MateriaAPI extends BaseAPI {
-
   // no auth
   Future<Token> signIn(String basePath, Map<String, dynamic> data) async {
     final String path = p.join(basePath, 'sign-in');
@@ -28,26 +26,26 @@ class MateriaAPI extends BaseAPI {
     return Token.fromJson(json.decode(response.body));
   }
 
-  Future<TmpToken> tmpRegistration(
+  Future<Token> tmpRegistration(
       String basePath, Map<String, dynamic> data) async {
     final String path = p.join(basePath, 'tmp-registration');
     final http.Response response = await post(path, data);
-    return TmpToken.fromJson(json.decode(response.body));
+    return Token.fromJson(json.decode(response.body));
   }
 
-  Future<PasswordResetToken> requestPasswordReset(
+  Future<Token> requestPasswordReset(
       String basePath, Map<String, dynamic> data) async {
     final String path = p.join(basePath, 'request-password-reset');
     final http.Response response = await post(path, data);
-    return PasswordResetToken.fromJson(json.decode(response.body));
+    return Token.fromJson(json.decode(response.body));
   }
 
 // tmp_user_auth
-  Future<Map<String, dynamic>> validationTmpUser(
+  Future<ResponseAuth> validationTmpUser(
       String basePath, Map<String, dynamic> data, String token) async {
     final String path = p.join(basePath, 'validation-tmp-user');
     final http.Response response = await get(path, token: token);
-    return json.decode(response.body);
+    return ResponseAuth.fromJson(json.decode(response.body));
   }
 
   Future<User> userRegistration(
@@ -57,19 +55,18 @@ class MateriaAPI extends BaseAPI {
     return User.fromJson(json.decode(response.body));
   }
 
-  Future<Map<String, dynamic>> userRegistrationAndSignIn(
+  Future<Token> userRegistrationAndSignIn(
       String basePath, Map<String, dynamic> data, String token) async {
     final String path = p.join(basePath, 'user-registration-and-sign-in');
     final http.Response response = await post(path, data, token: token);
-    return json.decode(response.body);
+    return Token.fromJson(json.decode(response.body));
   }
 
 //// pw_reset_auth
-  Future<Map<String, dynamic>> validationPwReset(
-      String basePath, String token) async {
+  Future<ResponseAuth> validationPwReset(String basePath, String token) async {
     final String path = p.join(basePath, 'validation-pw-reset');
     final http.Response response = await get(path, token: token);
-    return json.decode(response.body);
+    return ResponseAuth.fromJson(json.decode(response.body));
   }
 
   Future<User> resetMyPassword(
