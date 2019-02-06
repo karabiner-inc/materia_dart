@@ -7,8 +7,7 @@ import 'package:materia_dart/src/models/materia/grant.dart';
 import 'package:materia_dart/src/models/materia/mail_template.dart';
 import 'package:materia_dart/src/models/materia/token.dart';
 import 'package:materia_dart/src/models/materia/user.dart';
-import 'package:materia_dart/src/models/materia/tmp_token.dart';
-import 'package:materia_dart/src/models/materia/password_reset_token.dart';
+import 'package:materia_dart/src/models/materia/response_auth.dart';
 
 import 'package:materia_dart/src/services/materia_api.dart';
 
@@ -87,7 +86,7 @@ void main() {
       'email': email,
       'role': 'test',
     };
-    final TmpToken tmpToken = await api.tmpRegistration(basePath, data);
+    final Token tmpToken = await api.tmpRegistration(basePath, data);
     expect(tmpToken.user.email, email);
 
   });
@@ -96,7 +95,7 @@ void main() {
     var data = {
       'email': 'hogehoge@example.com',
     };
-    final PasswordResetToken result = await api.requestPasswordReset(basePath, data);
+    final Token result = await api.requestPasswordReset(basePath, data);
     expect(result.passwordResetToken.isNotEmpty, true);
   });
 
@@ -107,12 +106,12 @@ void main() {
       'email': email,
       'role': 'test',
     };
-    final TmpToken tmpToken = await api.tmpRegistration(basePath, data);
+    final Token tmpToken = await api.tmpRegistration(basePath, data);
     data = {
       'email': tmpToken.user.email
     };
-    final Map<String, dynamic> result = await api.validationTmpUser(basePath, data, tmpToken.userRegistrationToken);
-    expect(result['message'], 'authenticated');
+    final ResponseAuth result = await api.validationTmpUser(basePath, data, tmpToken.userRegistrationToken);
+    expect(result.message, 'authenticated');
   });
 
   test('user-registration', () async {
@@ -122,7 +121,7 @@ void main() {
       'email': email,
       'role': 'test',
     };
-    final TmpToken tmpToken = await api.tmpRegistration(basePath, data);
+    final Token tmpToken = await api.tmpRegistration(basePath, data);
     var createUserData = {
       'name': 'hogehoge$timestamp',
       'email': tmpToken.user.email,
@@ -140,31 +139,31 @@ void main() {
       'email': email,
       'role': 'test',
     };
-    final TmpToken tmpToken = await api.tmpRegistration(basePath, data);
+    final Token tmpToken = await api.tmpRegistration(basePath, data);
     var createUserData = {
       'name': 'hogehoge$timestamp',
       'email': tmpToken.user.email,
       'password': 'password',
       'password_confimation': 'password'
     };
-    final Map<String, dynamic> token = await api.userRegistrationAndSignIn(basePath, createUserData, tmpToken.userRegistrationToken);
-    expect(token['user']['id'], tmpToken.user.id);
+    final Token token = await api.userRegistrationAndSignIn(basePath, createUserData, tmpToken.userRegistrationToken);
+    expect(token.user.id, tmpToken.user.id);
   });
 
   test('validation-pw-reset', () async {
     var data = {
       'email': 'hogehoge@example.com',
     };
-    final PasswordResetToken password = await api.requestPasswordReset(basePath, data);
-    final Map<String, dynamic> result = await api.validationPwReset(basePath, password.passwordResetToken);
-    expect(result['message'], 'authenticated');
+    final Token password = await api.requestPasswordReset(basePath, data);
+    final ResponseAuth result = await api.validationPwReset(basePath, password.passwordResetToken);
+    expect(result.message, 'authenticated');
   });
 
   test('reset-my-password', () async {
     var data = {
       'email': 'hogehoge@example.com',
     };
-    final PasswordResetToken password = await api.requestPasswordReset(basePath, data);
+    final Token password = await api.requestPasswordReset(basePath, data);
     var rePwdData = {
       'password': 'hogehoge'
     };
