@@ -1,6 +1,3 @@
-// parent
-export 'materia_dart.dart';
-
 // models
 export 'src/models/materia_career/offer.dart';
 export 'src/models/materia_career/project.dart';

@@ -31,5 +31,18 @@ void main() {
     expect(projects.isNotEmpty, true);
   });
 
+  test('create and update my projects', () async {
+    var data = {'title': 'project1'};
+    final Project projects = await api.createMyProject(basePath, data, accessToken.accessToken);
+    expect(projects.title, 'project1');
+    var updateData = {
+      'id': projects.id,
+      'title': 'project2'
+    };
+    final Project updatedProjects = await api.updateMyProject(basePath, updateData, accessToken.accessToken);
+    expect(updatedProjects.title, 'project2');
+  });
+
+
 
 }
