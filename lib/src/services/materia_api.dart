@@ -14,27 +14,27 @@ import './base_api.dart';
 
 class MateriaAPI extends BaseAPI {
   // no auth
-  Future<Token> signIn(String basePath, Map<String, dynamic> data) async {
+  Future<Token> signIn(String basePath, dynamic data) async {
     final String path = p.join(basePath, 'sign-in');
     final http.Response response = await post(path, data);
     return Token.fromJson(json.decode(response.body));
   }
 
-  Future<Token> refresh(String basePath, Map<String, dynamic> data) async {
+  Future<Token> refresh(String basePath, dynamic data) async {
     final String path = p.join(basePath, 'refresh');
     final http.Response response = await post(path, data);
     return Token.fromJson(json.decode(response.body));
   }
 
   Future<Token> tmpRegistration(
-      String basePath, Map<String, dynamic> data) async {
+      String basePath, dynamic data) async {
     final String path = p.join(basePath, 'tmp-registration');
     final http.Response response = await post(path, data);
     return Token.fromJson(json.decode(response.body));
   }
 
   Future<Token> requestPasswordReset(
-      String basePath, Map<String, dynamic> data) async {
+      String basePath, dynamic data) async {
     final String path = p.join(basePath, 'request-password-reset');
     final http.Response response = await post(path, data);
     return Token.fromJson(json.decode(response.body));
@@ -42,21 +42,21 @@ class MateriaAPI extends BaseAPI {
 
 // tmp_user_auth
   Future<ResponseAuth> validationTmpUser(
-      String basePath, Map<String, dynamic> data, String token) async {
+      String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'validation-tmp-user');
     final http.Response response = await get(path, token: token);
     return ResponseAuth.fromJson(json.decode(response.body));
   }
 
   Future<User> userRegistration(
-      String basePath, Map<String, dynamic> data, String token) async {
+      String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'user-registration');
     final http.Response response = await post(path, data, token: token);
     return User.fromJson(json.decode(response.body));
   }
 
   Future<Token> userRegistrationAndSignIn(
-      String basePath, Map<String, dynamic> data, String token) async {
+      String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'user-registration-and-sign-in');
     final http.Response response = await post(path, data, token: token);
     return Token.fromJson(json.decode(response.body));
@@ -70,7 +70,7 @@ class MateriaAPI extends BaseAPI {
   }
 
   Future<User> resetMyPassword(
-      String basePath, Map<String, dynamic> data, String token) async {
+      String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'reset-my-password');
     final http.Response response = await post(path, data, token: token);
     return User.fromJson(json.decode(response.body));
@@ -198,7 +198,7 @@ class MateriaAPI extends BaseAPI {
   }
 
   Future<Token> signInWithAccount(
-      String basePath, Map<String, dynamic> data) async {
+      String basePath, dynamic data) async {
     final String path = p.join(basePath, 'sign-in');
     final http.Response response = await post(path, data);
     return Token.fromJson(json.decode(response.body));

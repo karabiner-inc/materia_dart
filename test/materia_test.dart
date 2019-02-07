@@ -1,15 +1,5 @@
 import 'package:test/test.dart';
-
-import 'package:materia_dart/src/models/materia/account.dart';
-import 'package:materia_dart/src/models/materia/address.dart';
-import 'package:materia_dart/src/models/materia/organization.dart';
-import 'package:materia_dart/src/models/materia/grant.dart';
-import 'package:materia_dart/src/models/materia/mail_template.dart';
-import 'package:materia_dart/src/models/materia/token.dart';
-import 'package:materia_dart/src/models/materia/user.dart';
-import 'package:materia_dart/src/models/materia/response_auth.dart';
-
-import 'package:materia_dart/src/services/materia_api.dart';
+import 'package:materia_dart/materia_dart.dart';
 
 const String basePath='http://localhost:4001/api';
 const String basePathOps='http://localhost:4001/api/ops';
@@ -19,8 +9,8 @@ const String basePathOps='http://localhost:4001/api/ops';
 
 void main() {
 
-  Token accsessToken;
-  Token accsessTokenForAccount;
+  Token accessToken;
+  Token accessTokenForAccount;
   MateriaAPI api = MateriaAPI();
 
 
@@ -32,13 +22,13 @@ void main() {
       'email': 'hogehoge@example.com',
       'password': 'hogehoge',
     };
-    accsessToken = await api.signIn(basePath, data);
+    accessToken = await api.signIn(basePath, data);
     data = {
       'account': 'hogehoge_code',
       'email': 'hogehoge@example.com',
       'password': 'hogehoge',
     };
-    accsessTokenForAccount = await api.signInWithAccount(basePath, data);
+    accessTokenForAccount = await api.signInWithAccount(basePath, data);
 
 
   });
@@ -172,7 +162,7 @@ void main() {
   });
 
   test('show me', () async {
-    final User user = await api.showMe(basePath, accsessToken.accessToken);
+    final User user = await api.showMe(basePath, accessToken.accessToken);
     expect(user.email, 'hogehoge@example.com');
   });
 
@@ -180,7 +170,7 @@ void main() {
     var role = {
       'role': 'anybody'
     };
-    final List<Grant> grants = await api.getByRole(basePath, role,  accsessToken.accessToken);
+    final List<Grant> grants = await api.getByRole(basePath, role,  accessToken.accessToken);
     expect(grants[0].role, 'anybody');
   });
 
@@ -196,13 +186,13 @@ void main() {
   });
 
   test('auth-check', () async {
-    final dynamic result = await api.authCheck(basePath, accsessToken.accessToken);
+    final dynamic result = await api.authCheck(basePath, accessToken.accessToken);
     expect(result['message'], 'authenticated');
   });
 
   test('search-users', () async {
     final Map<String, dynamic> requestData = Map<String, dynamic>();
-    final List<User> result = await api.searchUsers(basePath, requestData,  accsessToken.accessToken);
+    final List<User> result = await api.searchUsers(basePath, requestData,  accessToken.accessToken);
     expect(result.isNotEmpty, true);
   });
 
@@ -211,16 +201,16 @@ void main() {
       'address1': 'test1',
       'subject': 'address'
     };
-    final Address result1 = await api.createAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result1 = await api.createAddress(basePath, requestData,  accessToken.accessToken);
     expect(result1.address1, 'test1');
 
     requestData = {
       'id': result1.id,
     };
-    final Address result2 = await api.getAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result2 = await api.getAddress(basePath, requestData,  accessToken.accessToken);
     expect(result2.address1, 'test1');
 
-    final List<Address> result3 = await api.getAddresses(basePath, accsessToken.accessToken);
+    final List<Address> result3 = await api.getAddresses(basePath, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -229,7 +219,7 @@ void main() {
       'address1': 'test1',
       'subject': 'address'
     };
-    final Address result1 = await api.createAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result1 = await api.createAddress(basePath, requestData,  accessToken.accessToken);
     expect(result1.address1, 'test1');
 
 
@@ -238,7 +228,7 @@ void main() {
       'address1': 'test2',
       'subject': 'address'
     };
-    final Address result2 = await api.updateAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result2 = await api.updateAddress(basePath, requestData,  accessToken.accessToken);
     expect(result2.address1, 'test2');
 
   });
@@ -248,13 +238,13 @@ void main() {
       'address1': 'test1',
       'subject': 'address'
     };
-    final Address result1 = await api.createAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result1 = await api.createAddress(basePath, requestData,  accessToken.accessToken);
     expect(result1.address1, 'test1');
 
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteAddress(basePath, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteAddress(basePath, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 
@@ -263,7 +253,7 @@ void main() {
       'address1': 'test1',
       'subject': 'address'
     };
-    final Address result1 = await api.createMyAddress(basePath, requestData,  accsessToken.accessToken);
+    final Address result1 = await api.createMyAddress(basePath, requestData,  accessToken.accessToken);
     expect(result1.address1, 'test1');
 
   });
@@ -276,18 +266,18 @@ void main() {
       'external_code': 'test$timestamp',
       'start_date': '2019-01-01T12:00:00Z'
     };
-    final Account result1 = await api.createAccount(basePath, requestData,  accsessToken.accessToken);
+    final Account result1 = await api.createAccount(basePath, requestData,  accessToken.accessToken);
     expect(result1.externalCode, 'test$timestamp');
 
     requestData = {
       'id': result1.id,
     };
-    final Account result2 = await api.getAccount(basePath, requestData,  accsessToken.accessToken);
+    final Account result2 = await api.getAccount(basePath, requestData,  accessToken.accessToken);
     expect(result2.name, 'test1');
   });
 
   test('get accounts', () async {
-    final List<Account> result3 = await api.getAccounts(basePath, accsessToken.accessToken);
+    final List<Account> result3 = await api.getAccounts(basePath, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -299,7 +289,7 @@ void main() {
       'external_code': 'test$timestamp',
       'start_date': '2019-01-01T12:00:00Z'
     };
-    final Account result1 = await api.createAccount(basePath, requestData,  accsessToken.accessToken);
+    final Account result1 = await api.createAccount(basePath, requestData,  accessToken.accessToken);
 
     requestData = {
       'id': result1.id,
@@ -307,7 +297,7 @@ void main() {
       'external_code': 'update_test$timestamp',
       'start_date': '2019-01-01T12:00:00Z'
     };
-    final Account result2 = await api.updateAccount(basePath, requestData,  accsessToken.accessToken);
+    final Account result2 = await api.updateAccount(basePath, requestData,  accessToken.accessToken);
     expect(result2.name, 'test2');
     expect(result2.externalCode, 'update_test$timestamp');
 
@@ -321,23 +311,23 @@ void main() {
       'external_code': 'test$timestamp',
       'start_date': '2019-01-01T12:00:00Z'
     };
-    final Account result1 = await api.createAccount(basePath, requestData,  accsessToken.accessToken);
+    final Account result1 = await api.createAccount(basePath, requestData,  accessToken.accessToken);
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteAccount(basePath, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteAccount(basePath, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 
   test('search-accounts', () async {
     final dynamic requestData = Map<String, dynamic>();
-    final List<Account> result = await api.searchAccounts(basePath, requestData,  accsessToken.accessToken);
+    final List<Account> result = await api.searchAccounts(basePath, requestData,  accessToken.accessToken);
     expect(result.isNotEmpty, true);
   });
 
 
   test('my-account', () async {
-    final Account result = await api.getMyAccount(basePath, accsessTokenForAccount.accessToken);
+    final Account result = await api.getMyAccount(basePath, accessTokenForAccount.accessToken);
     expect(result.name, 'hogehoge account');
   });
 
@@ -351,18 +341,18 @@ void main() {
       'method': 'ANY',
       'request_path': '/api/test'
     };
-    final Grant result1 = await api.createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    final Grant result1 = await api.createGrant(basePathOps, requestData,  accessToken.accessToken);
     expect(result1.role, 'anybody$timestamp');
 
     requestData = {
       'id': result1.id,
     };
-    final Grant result2 = await api.getGrant(basePathOps, requestData,  accsessToken.accessToken);
+    final Grant result2 = await api.getGrant(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.role, 'anybody$timestamp');
   });
 
   test('get grants', () async {
-    final List<Grant> result3 = await api.getGrants(basePathOps, accsessToken.accessToken);
+    final List<Grant> result3 = await api.getGrants(basePathOps, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -374,7 +364,7 @@ void main() {
       'method': 'ANY',
       'request_path': '/api/test'
     };
-    final Grant result1 = await api.createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    final Grant result1 = await api.createGrant(basePathOps, requestData,  accessToken.accessToken);
 
     requestData = {
       'id': result1.id,
@@ -382,7 +372,7 @@ void main() {
       'method': 'GET',
       'request_path': '/api/test'
     };
-    final Grant result2 = await api.updateGrant(basePathOps, requestData,  accsessToken.accessToken);
+    final Grant result2 = await api.updateGrant(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.method, 'GET');
 
   });
@@ -395,11 +385,11 @@ void main() {
       'method': 'ANY',
       'request_path': '/api/test'
     };
-    final Grant result1 = await api.createGrant(basePathOps, requestData,  accsessToken.accessToken);
+    final Grant result1 = await api.createGrant(basePathOps, requestData,  accessToken.accessToken);
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteGrant(basePathOps, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteGrant(basePathOps, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 
@@ -413,18 +403,18 @@ void main() {
       'subject': 'testsubject',
       'mail_template_type': 'test$timestamp'
     };
-    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accessToken.accessToken);
     expect(result1.mailTemplateType, 'test$timestamp');
 
     requestData = {
       'id': result1.id,
     };
-    final MailTemplate result2 = await api.getMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    final MailTemplate result2 = await api.getMailTemplate(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.mailTemplateType, 'test$timestamp');
   });
 
   test('get mail-templates', () async {
-    final List<MailTemplate> result3 = await api.getMailTemplates(basePathOps, accsessToken.accessToken);
+    final List<MailTemplate> result3 = await api.getMailTemplates(basePathOps, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -436,7 +426,7 @@ void main() {
       'subject': 'testsubject',
       'mail_template_type': 'test$timestamp'
     };
-    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accessToken.accessToken);
 
     requestData = {
       'id': result1.id,
@@ -444,7 +434,7 @@ void main() {
       'subject': 'testsubject',
       'mail_template_type': 'test$timestamp'
     };
-    final MailTemplate result2 = await api.updateMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    final MailTemplate result2 = await api.updateMailTemplate(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.body, 'update testbody');
 
   });
@@ -457,11 +447,11 @@ void main() {
       'subject': 'testsubject',
       'mail_template_type': 'test$timestamp'
     };
-    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accsessToken.accessToken);
+    final MailTemplate result1 = await api.createMailTemplate(basePathOps, requestData,  accessToken.accessToken);
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteMailTemplate(basePathOps, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteMailTemplate(basePathOps, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 
@@ -476,19 +466,19 @@ void main() {
       'password_confimation': 'password',
       'role': 'client'
     };
-    final User result1 = await api.createUser(basePathOps, requestData,  accsessToken.accessToken);
+    final User result1 = await api.createUser(basePathOps, requestData,  accessToken.accessToken);
 
     expect(result1.name, 'hogehoge$timestamp');
 
     requestData = {
       'id': result1.id,
     };
-    final User result2 = await api.getUser(basePathOps, requestData,  accsessToken.accessToken);
+    final User result2 = await api.getUser(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.name, 'hogehoge$timestamp');
   });
 
   test('get users', () async {
-    final List<User> result3 = await api.getUsers(basePathOps, accsessToken.accessToken);
+    final List<User> result3 = await api.getUsers(basePathOps, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -502,7 +492,7 @@ void main() {
       'password_confimation': 'password',
       'role': 'client'
     };
-    final User result1 = await api.createUser(basePathOps, requestData,  accsessToken.accessToken);
+    final User result1 = await api.createUser(basePathOps, requestData,  accessToken.accessToken);
 
     requestData = {
       'id': result1.id,
@@ -511,7 +501,7 @@ void main() {
       'password': 'password',
       'password_confimation': 'password'
     };
-    final User result2 = await api.updateUser(basePathOps, requestData,  accsessToken.accessToken);
+    final User result2 = await api.updateUser(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.name, 'updatehogehoge$timestamp');
 
   });
@@ -526,11 +516,11 @@ void main() {
       'password_confimation': 'password',
       'role': 'client'
     };
-    final User result1 = await api.createUser(basePathOps, requestData,  accsessToken.accessToken);
+    final User result1 = await api.createUser(basePathOps, requestData,  accessToken.accessToken);
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteUser(basePathOps, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteUser(basePathOps, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 
@@ -541,19 +531,19 @@ void main() {
     dynamic requestData = {
       'name': 'hogehoge$timestamp',
     };
-    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accessToken.accessToken);
 
     expect(result1.name, 'hogehoge$timestamp');
 
     requestData = {
       'id': result1.id,
     };
-    final Organization result2 = await api.getOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    final Organization result2 = await api.getOrganization(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.name, 'hogehoge$timestamp');
   });
 
   test('get organizations', () async {
-    final List<Organization> result3 = await api.getOrganizations(basePathOps, accsessToken.accessToken);
+    final List<Organization> result3 = await api.getOrganizations(basePathOps, accessToken.accessToken);
     expect(result3.isNotEmpty, true);
   });
 
@@ -563,13 +553,13 @@ void main() {
     dynamic requestData = {
       'name': 'hogehoge$timestamp',
     };
-    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accessToken.accessToken);
 
     requestData = {
       'id': result1.id,
       'name': 'updatehogehoge$timestamp',
     };
-    final Organization result2 = await api.updateOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    final Organization result2 = await api.updateOrganization(basePathOps, requestData,  accessToken.accessToken);
     expect(result2.name, 'updatehogehoge$timestamp');
 
   });
@@ -580,11 +570,11 @@ void main() {
     dynamic requestData = {
       'name': 'hogehoge$timestamp',
     };
-    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accsessToken.accessToken);
+    final Organization result1 = await api.createOrganization(basePathOps, requestData,  accessToken.accessToken);
     requestData = {
       'id': result1.id,
     };
-    final bool result2 = await api.deleteOrganization(basePathOps, requestData, accsessToken.accessToken);
+    final bool result2 = await api.deleteOrganization(basePathOps, requestData, accessToken.accessToken);
     expect(result2, true);
   });
 }
