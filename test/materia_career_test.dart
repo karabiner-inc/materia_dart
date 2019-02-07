@@ -8,9 +8,7 @@ const String basePathOps='http://localhost:4001/api/ops';
 void main() {
 
   Token accessToken;
-  Token accessTokenForAccount;
   MateriaCareerAPI api = MateriaCareerAPI();
-  MateriaAPI materiaApi = MateriaAPI();
 
   String _timestamp() => (DateTime.now().millisecondsSinceEpoch + 1).toString();
 
@@ -19,7 +17,7 @@ void main() {
       'email': 'hogehoge@example.com',
       'password': 'hogehoge',
     };
-    accessToken = await materiaApi.signIn(basePath, data);
+    accessToken = await api.signIn(basePath, data);
   });
 
   test('list projects', () async {
@@ -33,5 +31,5 @@ void main() {
     expect(projects.isNotEmpty, true);
   });
 
-  
+
 }

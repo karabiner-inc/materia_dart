@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
-import 'base_api.dart';
+import 'materia_api.dart';
 import '../models/materia_career/offer.dart';
 import '../models/materia_career/project.dart';
 import '../models/materia_career/record.dart';
 
-class MateriaCareerAPI extends BaseAPI {
+class MateriaCareerAPI extends MateriaAPI {
   //  projects with auth
   Future<List<Project>> listMyProjects(String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'list-my-projects');
