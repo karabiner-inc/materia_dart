@@ -22,9 +22,9 @@ class Account {
       id: json['id'],
       name: json['name'],
       externalCode: json['external_code'],
-      startDatetime: json['start_datetime'],
-      frozenDatetime: json['frozen_datetime'],
-      expiredDatetime: json['expired_datetime'],
+      startDatetime: DateTime.tryParse(json['start_datetime'] ?? ''),
+      frozenDatetime: DateTime.tryParse(json['frozen_datetime'] ?? ''),
+      expiredDatetime: DateTime.tryParse(json['expired_datetime'] ?? ''),
       descriptions: json['descriptions'],
       status: json['status'],
       lockVersion: json['lock_version'],
@@ -44,9 +44,9 @@ class Account {
   int id;
   String name;
   String externalCode;
-  String startDatetime;
-  String frozenDatetime;
-  String expiredDatetime;
+  DateTime startDatetime;
+  DateTime frozenDatetime;
+  DateTime expiredDatetime;
   String descriptions;
   int status;
   int lockVersion;

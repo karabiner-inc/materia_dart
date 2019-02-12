@@ -32,10 +32,10 @@ class Project {
         organizationId: json['organization_id'],
         organization: Organization.fromJson(json['organization']),
         projectCategory: json['project_category'],
-        projectStartDate: json['project_start_date'],
-        projectEndDate: json['project_end_date'],
-        workStartDate: json['work_start_date'],
-        workEndDate: json['work_end_date'],
+        projectStartDate: DateTime.tryParse(json['project_start_date'] ?? ''),
+        projectEndDate: DateTime.tryParse(json['project_end_date'] ?? ''),
+        workStartDate: DateTime.tryParse(json['work_start_date'] ?? ''),
+        workEndDate: DateTime.tryParse(json['work_end_date'] ?? ''),
         status: json['status'],
         pay: json['pay'],
         workStyle: json['work_style'],
@@ -59,10 +59,10 @@ class Project {
   int organizationId;
   Organization organization;
   String projectCategory;
-  String projectStartDate;
-  String projectEndDate;
-  String workStartDate;
-  String workEndDate;
+  DateTime projectStartDate;
+  DateTime projectEndDate;
+  DateTime workStartDate;
+  DateTime workEndDate;
   int status;
   int pay;
   String workStyle;
