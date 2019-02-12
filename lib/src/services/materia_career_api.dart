@@ -34,6 +34,12 @@ class MateriaCareerAPI extends MateriaAPI {
     return Project.fromListJson(json.decode(response.body));
   }
 
+  Future<Project> getProject(String basePath, int projectId) async {
+    final String path = p.join(basePath, 'projects/$projectId');
+    final http.Response response = await get(path);
+    return Project.fromJson(json.decode(response.body));
+  }
+
   //  offers
   Future<List<Offer>> listMyOffers(String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'list-my-offers');
