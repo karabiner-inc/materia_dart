@@ -163,20 +163,57 @@ void main() {
   });
 
 
-  test('update-my-organization-offer', () async {
+//  test('answer-offer-to-me', () async {
+//    var data = {'status': '1'};
+//    final List<Offer> offers = await api.listMyOffers(basePath, data, accessToken.accessToken);
+//
+//    var updateOfferData = {
+//      'offer_id': offers[0].id,
+//      'answer_message': 'answer message',
+//      'status': 1,
+//      'lock_version': offers[0].lockVersion,
+//    };
+//
+//    final Offer updatedOffer = await api.answerOfferToMe(basePath, updateOfferData, accessToken.accessToken);
+//    expect(updatedOffer.answerMessage, 'answer message');
+//
+//  });
 
-    var updateOfferData = {
-      'offer_id': 2,
-      'answer_message': 'answer message',
-      'status': 2,
-      'lock_version': 1,
-    };
+//  records
 
-    final Offer updatedOffer = await api.answerOfferToMe(basePath, updateOfferData, accessToken.accessToken);
-    expect(updatedOffer.answerMessage, 'answer message');
+  test('list-my-records', () async {
+    final List<Record> records = await api.listMyRecords(basePath, accessToken.accessToken);
+    expect(records.isNotEmpty, true);
 
   });
 
+  test('create-my-record', () async {
+    var data = {
+      'title': 'title1',
+      'discription': 'discription1',
+      'project_id': 1
+    };
+    final Record record = await api.createMyRecord(basePath, data, accessToken.accessToken);
+    expect(record.title, 'title1');
 
+  });
+
+  test('update-my-record', () async {
+    var data = {
+      'title': 'title1',
+      'discription': 'discription1',
+      'project_id': 1
+    };
+    final Record record = await api.createMyRecord(basePath, data, accessToken.accessToken);
+
+    var updateData = {
+      'id': record.id,
+      'title': 'updated title1',
+      'discription': 'updated discription1',
+      'project_id': 1
+    };
+    final Record updatedRecord = await api.updateMyRecord(basePath, updateData, accessToken.accessToken);
+    expect(updatedRecord.title, 'updated title1');
+  });
 
 }
