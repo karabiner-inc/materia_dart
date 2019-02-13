@@ -13,6 +13,9 @@ class Offer {
       this.answerTime});
 
   factory Offer.fromJson(dynamic json) {
+    if (json == null) {
+      return Offer();
+    }
     return Offer(
         id: json['id'],
         messageSubject: json['message_subject'],

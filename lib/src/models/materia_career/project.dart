@@ -22,6 +22,9 @@ class Project {
       this.lockVersion});
 
   factory Project.fromJson(dynamic json) {
+    if(json == null) {
+      return Project();
+    }
     return Project(
         id: json['id'],
         title: json['title'],
