@@ -2,7 +2,8 @@ class Record {
   Record(
       {this.id,
       this.title,
-      this.discription,
+      this.description,
+      this.score,
       this.userId,
       this.projectId,
       this.lockVersion});
@@ -11,7 +12,8 @@ class Record {
     return Record(
         id: json['id'],
         title: json['title'],
-        discription: json['discription'],
+        description: json['description'],
+        score: json['score'],
         userId: json['user_id'],
         projectId: json['project_id'],
         lockVersion: json['lock_version']);
@@ -26,7 +28,8 @@ class Record {
 
   int id;
   String title;
-  String discription;
+  String description;
+  double score;
   int userId;
   int projectId;
   int lockVersion;
