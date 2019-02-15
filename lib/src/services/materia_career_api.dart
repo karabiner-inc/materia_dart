@@ -6,6 +6,7 @@ import 'materia_api.dart';
 import '../models/materia_career/offer.dart';
 import '../models/materia_career/project.dart';
 import '../models/materia_career/record.dart';
+import '../models/materia_career/skill.dart';
 
 class MateriaCareerAPI extends MateriaAPI {
   //  projects with auth
@@ -107,4 +108,33 @@ class MateriaCareerAPI extends MateriaAPI {
     final http.Response response = await post(path, data, token: token);
     return Record.fromJson(json.decode(response.body));
   }
+
+  // skills
+  Future<List<Skill>> listMySkills(String basePath, String token) async {
+    final String path = p.join(basePath, 'list-my-skills');
+    final http.Response response = await get(path, token: token);
+    return Skill.fromListJson(json.decode(response.body));
+  }
+
+  Future<Skill> createMySkill(String basePath, dynamic data, String token) async {
+    final String path = p.join(basePath, 'create-my-skill');
+    final http.Response response = await post(path, data, token: token);
+    return Skill.fromJson(json.decode(response.body));
+  }
+
+  Future<Skill> updateMySkill(String basePath, dynamic data, String token) async {
+    final String path = p.join(basePath, 'update-my-skill');
+    final http.Response response = await put(path, data, token: token);
+    return Skill.fromJson(json.decode(response.body));
+  }
+
+  Future<bool> deleteMySkill(String basePath, dynamic data, String token) async {
+    final String path = p.join(basePath, 'delete-my-skill?id=${data['id']}');
+    final http.Response response = await delete(path, token: token);
+    if (response.statusCode == 204) {
+      return true;
+    }
+    return false;
+  }
+
 }
