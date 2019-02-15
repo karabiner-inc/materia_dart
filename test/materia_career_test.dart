@@ -232,4 +232,66 @@ void main() {
     expect(updatedRecord.title, 'updated title1');
     expect(updatedRecord.score, 12.0);
   });
+
+  // skills
+  test('create-my-skill and list-my-skills', () async {
+    var data = {
+      'subject': 'subject1',
+      'name': 'name1',
+      'start_date': '2010-01-01',
+      'end_date': '2010-01-01',
+    };
+    final Skill skill =
+    await api.createMySkill(basePath, data, accessToken.accessToken);
+    expect(skill.subject, 'subject1');
+    expect(skill.name, 'name1');
+
+    final List<Skill> skills =
+    await api.listMySkills(basePath, accessToken.accessToken);
+    expect(skills.isNotEmpty, true);
+  });
+
+  test('update-my-record', () async {
+    var data = {
+      'subject': 'subject1',
+      'name': 'name1',
+      'start_date': '2010-01-01',
+      'end_date': '2010-01-01',
+    };
+    final Skill skill =
+    await api.createMySkill(basePath, data, accessToken.accessToken);
+    expect(skill.subject, 'subject1');
+
+    var updateData = {
+      'id': skill.id,
+      'subject': 'subject2',
+      'name': 'name2',
+      'start_date': '2010-01-01',
+      'end_date': '2010-01-01',
+    };
+    final Skill updatedSkill =
+    await api.updateMySkill(basePath, updateData, accessToken.accessToken);
+    expect(updatedSkill.subject, 'subject2');
+    expect(updatedSkill.name, 'name2');
+  });
+
+  test('delete-my-record', () async {
+    var data = {
+      'subject': 'subject1',
+      'name': 'name1',
+      'start_date': '2010-01-01',
+      'end_date': '2010-01-01',
+    };
+    final Skill skill =
+    await api.createMySkill(basePath, data, accessToken.accessToken);
+    expect(skill.subject, 'subject1');
+
+    var deleteData = {
+      'id': skill.id,
+    };
+    final bool result =
+    await api.deleteMySkill(basePath, deleteData, accessToken.accessToken);
+    expect(result, true);
+  });
+
 }
