@@ -117,7 +117,7 @@ class MateriaCareerAPI extends MateriaAPI {
   }
 
   Future<List<Skill>> listUserSkills(String basePath, int userId,  String token) async {
-    final String path = p.join(basePath, 'list-my-skills?user_id=$userId');
+    final String path = p.join(basePath, 'list_user_skills?user_id=$userId');
     final http.Response response = await get(path, token: token);
     return Skill.fromListJson(json.decode(response.body));
   }
