@@ -122,6 +122,12 @@ class MateriaCareerAPI extends MateriaAPI {
     return Skill.fromJson(json.decode(response.body));
   }
 
+  Future<List<Skill>> createMySkills(String basePath, dynamic data, String token) async {
+    final String path = p.join(basePath, 'create-my-skills');
+    final http.Response response = await post(path, data, token: token);
+    return Skill.fromListJson(json.decode(response.body));
+  }
+
   Future<Skill> updateMySkill(String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'update-my-skill');
     final http.Response response = await put(path, data, token: token);
