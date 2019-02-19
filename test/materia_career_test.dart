@@ -242,13 +242,40 @@ void main() {
       'end_date': '2010-01-01',
     };
     final Skill skill =
-    await api.createMySkill(basePath, data, accessToken.accessToken);
+        await api.createMySkill(basePath, data, accessToken.accessToken);
     expect(skill.subject, 'subject1');
     expect(skill.name, 'name1');
 
     final List<Skill> skills =
-    await api.listMySkills(basePath, accessToken.accessToken);
+        await api.listMySkills(basePath, accessToken.accessToken);
     expect(skills.isNotEmpty, true);
+  });
+
+  test('create-my-skills and list-my-skills', () async {
+    var data = {
+      'skills': [
+        {
+          'subject': 'subject1',
+          'name': 'name1',
+          'start_date': '2010-01-01',
+          'end_date': '2010-01-01',
+        },
+        {
+          'subject': 'subject1',
+          'name': 'name1',
+          'start_date': '2010-01-01',
+          'end_date': '2010-01-01',
+        }
+      ],
+      'is_delete': true
+    };
+    final List<Skill> createSkills =
+        await api.createMySkills(basePath, data, accessToken.accessToken);
+    expect(createSkills.length, 2);
+
+    final List<Skill> skills =
+        await api.listMySkills(basePath, accessToken.accessToken);
+    expect(skills.length, 2);
   });
 
   test('update-my-record', () async {
@@ -259,7 +286,7 @@ void main() {
       'end_date': '2010-01-01',
     };
     final Skill skill =
-    await api.createMySkill(basePath, data, accessToken.accessToken);
+        await api.createMySkill(basePath, data, accessToken.accessToken);
     expect(skill.subject, 'subject1');
 
     var updateData = {
@@ -270,7 +297,7 @@ void main() {
       'end_date': '2010-01-01',
     };
     final Skill updatedSkill =
-    await api.updateMySkill(basePath, updateData, accessToken.accessToken);
+        await api.updateMySkill(basePath, updateData, accessToken.accessToken);
     expect(updatedSkill.subject, 'subject2');
     expect(updatedSkill.name, 'name2');
   });
@@ -283,15 +310,14 @@ void main() {
       'end_date': '2010-01-01',
     };
     final Skill skill =
-    await api.createMySkill(basePath, data, accessToken.accessToken);
+        await api.createMySkill(basePath, data, accessToken.accessToken);
     expect(skill.subject, 'subject1');
 
     var deleteData = {
       'id': skill.id,
     };
     final bool result =
-    await api.deleteMySkill(basePath, deleteData, accessToken.accessToken);
+        await api.deleteMySkill(basePath, deleteData, accessToken.accessToken);
     expect(result, true);
   });
-
 }
