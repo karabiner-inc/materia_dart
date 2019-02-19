@@ -234,7 +234,7 @@ void main() {
   });
 
   // skills
-  test('create-my-skill and list-my-skills', () async {
+  test('create-my-skill and list-my-skills and list-user-skills', () async {
     var data = {
       'subject': 'subject1',
       'name': 'name1',
@@ -249,6 +249,10 @@ void main() {
     final List<Skill> skills =
         await api.listMySkills(basePath, accessToken.accessToken);
     expect(skills.isNotEmpty, true);
+    
+    final List<Skill> userSkills =
+        await api.listUserSkills(basePath, skill.userId, accessToken.accessToken);
+    expect(userSkills.isNotEmpty, true);
   });
 
   test('create-my-skills and list-my-skills', () async {
