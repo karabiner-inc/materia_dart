@@ -16,6 +16,8 @@ class Organization {
   factory Organization.fromJson(dynamic json) {
     if(json == null) {
       return Organization();
+    } else if(json is List) {
+      return Organization();
     }
     return Organization(
         id: json['id'] ?? '',

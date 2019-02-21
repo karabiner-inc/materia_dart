@@ -17,7 +17,7 @@ class User{
         email: json['email'],
         descriptions: json['descriptions'],
         phoneNumber: json['phone_number'],
-//        organization: Organization.fromListJson(json['organization']),
+        organization: Organization.fromJson(json['organization']),
         addresses: Address.fromListJson(json['addresses'])
     );
   }
