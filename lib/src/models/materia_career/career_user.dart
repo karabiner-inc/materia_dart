@@ -2,15 +2,15 @@ import '../materia/address.dart';
 import '../materia/organization.dart';
 import 'skill.dart';
 
-class User{
-  User({this.id, this.name, this.role, this.iconImgUrl, this.email, this.descriptions, this.phoneNumber, this.organization, this.addresses, this.skills});
+class CareerUser{
+  CareerUser({this.id, this.name, this.role, this.iconImgUrl, this.email, this.descriptions, this.phoneNumber, this.organization, this.addresses, this.skills});
 
 
-  factory User.fromJson(dynamic json) {
+  factory CareerUser.fromJson(dynamic json) {
     if (json == null) {
-      return User();
+      return CareerUser();
     }
-    return User(
+    return CareerUser(
         id: json['id'],
         name: json['name'],
         role: json['role'],
@@ -24,11 +24,11 @@ class User{
     );
   }
 
-  static List<User> fromListJson(List<dynamic> listJson) {
+  static List<CareerUser> fromListJson(List<dynamic> listJson) {
     if(listJson.isEmpty) {
       return [];
     }
-    return listJson.map((dynamic json) => User.fromJson(json)).toList();
+    return listJson.map((dynamic json) => CareerUser.fromJson(json)).toList();
   }
 
   int id;

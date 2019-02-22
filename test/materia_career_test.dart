@@ -339,19 +339,19 @@ void main() {
     expect(skill.name, 'name1');
     expect(skill.userId, 1);
 
-    final List<User> users1 =
+    final List<CareerUser> users1 =
     await api.listUsersWithSkills(basePath, accessToken.accessToken);
     expect(users1.isNotEmpty, true);
 
-    final List<User> users2 =
+    final List<CareerUser> users2 =
     await api.listUsersWithSkillsByStatus(basePath, 9 , accessToken.accessToken);
     expect(users2.isEmpty, true);
 
-    final User user1 =
+    final CareerUser user1 =
     await api.showMeWithSkills(basePath, accessToken.accessToken);
     expect(user1.skills.isNotEmpty, true);
 
-    final User user2 =
+    final CareerUser user2 =
     await api.getUserWithSkills(basePath, skill.userId, accessToken.accessToken);
     expect(user2.skills.isNotEmpty, true);
   });
