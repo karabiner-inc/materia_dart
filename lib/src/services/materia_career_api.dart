@@ -7,6 +7,7 @@ import '../models/materia_career/offer.dart';
 import '../models/materia_career/project.dart';
 import '../models/materia_career/record.dart';
 import '../models/materia_career/skill.dart';
+import '../models/materia_career/user.dart';
 
 class MateriaCareerAPI extends MateriaAPI {
   //  projects with auth
@@ -147,6 +148,31 @@ class MateriaCareerAPI extends MateriaAPI {
       return true;
     }
     return false;
+  }
+
+  // users extend career
+  Future<List<User>> listUsersWithSkills(String basePath, String token) async {
+    final String path = p.join(basePath, 'users-with-skills');
+    final http.Response response = await get(path, token: token);
+    return User.fromListJson(json.decode(response.body));
+  }
+
+  Future<List<User>> listUsersWithSkillsByStatus(String basePath, int status, String token) async {
+    final String path = p.join(basePath, 'users-with-skills?status=$status');
+    final http.Response response = await get(path, token: token);
+    return User.fromListJson(json.decode(response.body));
+  }
+
+  Future<User> showMeWithSkills(String basePath, String token) async {
+    final String path = p.join(basePath, 'user-with-skills');
+    final http.Response response = await get(path, token: token);
+    return User.fromJson(json.decode(response.body));
+  }
+
+  Future<User> getUserWithSkills(String basePath, int userId,  String token) async {
+    final String path = p.join(basePath, 'users-with-skills/$userId');
+    final http.Response response = await get(path, token: token);
+    return User.fromJson(json.decode(response.body));
   }
 
 }

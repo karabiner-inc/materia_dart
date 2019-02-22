@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:materia_dart/materia_career_dart.dart';
-import 'package:materia_dart/materia_dart.dart';
 
 const String basePath = 'http://localhost:4001/api';
 const String basePathOps = 'http://localhost:4001/api/ops';
@@ -255,32 +254,32 @@ void main() {
     expect(userSkills.isNotEmpty, true);
   });
 
-  test('create-my-skills and list-my-skills', () async {
-    var data = {
-      'skills': [
-        {
-          'subject': 'subject1',
-          'name': 'name1',
-          'start_date': '2010-01-01',
-          'end_date': '2010-01-01',
-        },
-        {
-          'subject': 'subject1',
-          'name': 'name1',
-          'start_date': '2010-01-01',
-          'end_date': '2010-01-01',
-        }
-      ],
-      'is_delete': true
-    };
-    final List<Skill> createSkills =
-        await api.createMySkills(basePath, data, accessToken.accessToken);
-    expect(createSkills.length, 2);
-
-    final List<Skill> skills =
-        await api.listMySkills(basePath, accessToken.accessToken);
-    expect(skills.length, 2);
-  });
+//  test('create-my-skills and list-my-skills', () async {
+//    var data = {
+//      'skills': [
+//        {
+//          'subject': 'subject1',
+//          'name': 'name1',
+//          'start_date': '2010-01-01',
+//          'end_date': '2010-01-01',
+//        },
+//        {
+//          'subject': 'subject1',
+//          'name': 'name1',
+//          'start_date': '2010-01-01',
+//          'end_date': '2010-01-01',
+//        }
+//      ],
+//      'is_delete': true
+//    };
+//    final List<Skill> createSkills =
+//        await api.createMySkills(basePath, data, accessToken.accessToken);
+//    expect(createSkills.length, 2);
+//
+//    final List<Skill> skills =
+//        await api.listMySkills(basePath, accessToken.accessToken);
+//    expect(skills.length, 2);
+//  });
 
   test('update-my-record', () async {
     var data = {
@@ -324,4 +323,37 @@ void main() {
         await api.deleteMySkill(basePath, deleteData, accessToken.accessToken);
     expect(result, true);
   });
+
+
+  // skills
+  test('user with skill api', () async {
+    var data = {
+      'subject': 'subject1',
+      'name': 'name1',
+      'start_date': '2010-01-01',
+      'end_date': '2010-01-01',
+    };
+    final Skill skill =
+    await api.createMySkill(basePath, data, accessToken.accessToken);
+    expect(skill.subject, 'subject1');
+    expect(skill.name, 'name1');
+    expect(skill.userId, 1);
+
+    final List<User> users1 =
+    await api.listUsersWithSkills(basePath, accessToken.accessToken);
+    expect(users1.isNotEmpty, true);
+
+    final List<User> users2 =
+    await api.listUsersWithSkillsByStatus(basePath, 9 , accessToken.accessToken);
+    expect(users2.isEmpty, true);
+
+    final User user1 =
+    await api.showMeWithSkills(basePath, accessToken.accessToken);
+    expect(user1.skills.isNotEmpty, true);
+
+    final User user2 =
+    await api.getUserWithSkills(basePath, skill.userId, accessToken.accessToken);
+    expect(user2.skills.isNotEmpty, true);
+  });
+
 }
