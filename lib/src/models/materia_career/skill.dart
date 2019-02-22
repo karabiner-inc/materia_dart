@@ -8,12 +8,16 @@ class Skill {
   int id;
 
   factory Skill.fromJson(dynamic json) {
+    if(json == null) {
+      return Skill();
+    }
     return Skill(
       id: json['id'],
       name: json['name'],
       subject: json['subject'],
       startDate: json['start_date'] != null ? DateTime.tryParse(json['start_date']) : null,
-      endDate: json['end_date'] != null ? DateTime.tryParse(json['end_date']) : null
+      endDate: json['end_date'] != null ? DateTime.tryParse(json['end_date']) : null,
+      userId: json['user_id']
     );
   }
 
