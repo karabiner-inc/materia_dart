@@ -1,4 +1,5 @@
 import '../../models/materia/user.dart';
+import '../../models/materia_career/project.dart';
 class Offer {
   Offer(
       {this.id,
@@ -8,6 +9,7 @@ class Offer {
       this.status,
       this.lockVersion,
       this.projectId,
+      this.project,
       this.fromUserId,
       this.fromUser,
       this.toUserId,
@@ -27,6 +29,7 @@ class Offer {
         status: json['status'],
         lockVersion: json['lock_version'],
         projectId: json['project_id'],
+        project: Project.fromJson(json['project']),
         fromUserId: json['from_user_id'],
         fromUser: User.fromJson(json['from_user']),
         toUserId: json['to_user_id'],
@@ -51,6 +54,7 @@ class Offer {
   int status;
   int lockVersion;
   int projectId;
+  Project project;
   int fromUserId;
   User fromUser;
   int toUserId;
