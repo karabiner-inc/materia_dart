@@ -43,11 +43,20 @@ void main() {
     expect(updatedProjects.title, 'project2');
   });
 
-  test('list my offers', () async {
+  test('list my offers and get my offer', () async {
     var data = {'status': '1'};
     final List<Offer> offers =
         await api.listMyOffers(basePath, data, accessToken.accessToken);
     expect(offers.isNotEmpty, true);
+
+    data = {
+      'status': '1',
+      'id': '${offers[0].id}'
+    };
+    
+    final Offer myOffer = await api.getMyOffer(basePath, data, accessToken.accessToken);
+    expect(offers[0].id, myOffer.id);
+
   });
 
   test('list-my-projects-offers', () async {
