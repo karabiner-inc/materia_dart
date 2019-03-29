@@ -27,7 +27,7 @@ class ChatMessage {
         status: json['status'],
         body: json['body'],
         lockVersion: json['lock_version'],
-        sendDatetime: json['send_datetime']);
+        sendDatetime: DateTime.tryParse(json['send_datetime']));
   }
 
   static List<ChatMessage> fromListJson(List<dynamic> listJson) {

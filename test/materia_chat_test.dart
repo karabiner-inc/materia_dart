@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:materia_dart/materia_chat_dart.dart';
-import 'dart:js';
 
 const String basePath = 'http://localhost:4001/api';
 const String basePathOps = 'http://localhost:4001/api/ops';
