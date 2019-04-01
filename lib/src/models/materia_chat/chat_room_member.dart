@@ -8,7 +8,7 @@ class ChatRoomMember {
       this.status,
       this.isAdmin,
       this.lockVersion,
-      this.users});
+      this.user});
 
   final int id;
   final int chatRoomId;
@@ -16,9 +16,10 @@ class ChatRoomMember {
   final int isAdmin;
   final int status;
   final int lockVersion;
-  final List<User> users;
+  final User user;
 
   factory ChatRoomMember.fromJson(dynamic json) {
+
     if (json == null) {
       return ChatRoomMember();
     }
@@ -29,7 +30,8 @@ class ChatRoomMember {
         status: json['status'],
         isAdmin: json['is_admin'],
         lockVersion: json['lock_version'],
-        users: User.fromListJson(json['user']));
+        user: json['user'] is List ? User() : User.fromJson(json['user']) // TODO: 本当はMAPで来るはず
+        );
   }
 
   static List<ChatRoomMember> fromListJson(List<dynamic> listJson) {

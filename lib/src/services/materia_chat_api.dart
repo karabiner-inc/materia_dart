@@ -18,28 +18,28 @@ class MateriaChatAPI extends MateriaAPI {
     return ChatRoom.fromListJson(json.decode(response.body));
   }
 
-  Future<ChatRoom> getChatRooms(
+  Future<ChatRoom> getChatRoom(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_rooms/$id');
     final http.Response response = await get(path, token: token);
     return ChatRoom.fromJson(json.decode(response.body));
   }
 
-  Future<ChatRoom> postChatRooms(
+  Future<ChatRoom> postChatRoom(
       String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'chat_rooms');
     final http.Response response = await post(path, data, token: token);
     return ChatRoom.fromJson(json.decode(response.body));
   }
 
-  Future<ChatRoom> putChatRooms(
+  Future<ChatRoom> putChatRoom(
       String basePath, dynamic data, String token) async {
-    final String path = p.join(basePath, 'chat_rooms');
+    final String path = p.join(basePath, 'chat_rooms/${data['id']}');
     final http.Response response = await put(path, data, token: token);
     return ChatRoom.fromJson(json.decode(response.body));
   }
 
-  Future<bool> deleteChatRooms(
+  Future<bool> deleteChatRoom(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_rooms/$id');
     final http.Response response = await delete(path, token: token);
@@ -57,28 +57,28 @@ class MateriaChatAPI extends MateriaAPI {
     return ChatRoomMember.fromListJson(json.decode(response.body));
   }
 
-  Future<ChatRoomMember> getChatRoomMembers(
+  Future<ChatRoomMember> getChatRoomMember(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_room_members/$id');
     final http.Response response = await get(path, token: token);
     return ChatRoomMember.fromJson(json.decode(response.body));
   }
 
-  Future<ChatRoomMember> postChatRoomMembers(
+  Future<ChatRoomMember> postChatRoomMember(
       String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'chat_room_members');
     final http.Response response = await post(path, data, token: token);
     return ChatRoomMember.fromJson(json.decode(response.body));
   }
 
-  Future<ChatRoomMember> putChatRoomMembers(
+  Future<ChatRoomMember> putChatRoomMember(
       String basePath, dynamic data, String token) async {
-    final String path = p.join(basePath, 'chat_room_members');
+    final String path = p.join(basePath, 'chat_room_members/${data['id']}');
     final http.Response response = await put(path, data, token: token);
     return ChatRoomMember.fromJson(json.decode(response.body));
   }
 
-  Future<bool> deleteChatRoomMembers(
+  Future<bool> deleteChatRoomMember(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_room_members/$id');
     final http.Response response = await delete(path, token: token);
@@ -96,28 +96,28 @@ class MateriaChatAPI extends MateriaAPI {
     return ChatMessage.fromListJson(json.decode(response.body));
   }
 
-  Future<ChatMessage> getChatMessages(
+  Future<ChatMessage> getChatMessage(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_messages/$id');
     final http.Response response = await get(path, token: token);
     return ChatMessage.fromJson(json.decode(response.body));
   }
 
-  Future<ChatMessage> postChatMessages(
+  Future<ChatMessage> postChatMessage(
       String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'chat_messages');
     final http.Response response = await post(path, data, token: token);
     return ChatMessage.fromJson(json.decode(response.body));
   }
 
-  Future<ChatMessage> putChatMessages(
+  Future<ChatMessage> putChatMessage(
       String basePath, dynamic data, String token) async {
-    final String path = p.join(basePath, 'chat_messages');
+    final String path = p.join(basePath, 'chat_messages/${data['id']}');
     final http.Response response = await put(path, data, token: token);
     return ChatMessage.fromJson(json.decode(response.body));
   }
 
-  Future<bool> deleteChatMessages(
+  Future<bool> deleteChatMessage(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_messages/$id');
     final http.Response response = await delete(path, token: token);
@@ -134,28 +134,28 @@ class MateriaChatAPI extends MateriaAPI {
     return ChatUnread.fromListJson(json.decode(response.body));
   }
 
-  Future<ChatUnread> getChatUnreads(
+  Future<ChatUnread> getChatUnread(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_unreads/$id');
     final http.Response response = await get(path, token: token);
     return ChatUnread.fromJson(json.decode(response.body));
   }
 
-  Future<ChatUnread> postChatUnreads(
+  Future<ChatUnread> postChatUnread(
       String basePath, dynamic data, String token) async {
     final String path = p.join(basePath, 'chat_unreads');
     final http.Response response = await post(path, data, token: token);
     return ChatUnread.fromJson(json.decode(response.body));
   }
 
-  Future<ChatUnread> putChatUnreads(
+  Future<ChatUnread> putChatUnread(
       String basePath, dynamic data, String token) async {
-    final String path = p.join(basePath, 'chat_unreads');
+    final String path = p.join(basePath, 'chat_unreads/${data['id']}');
     final http.Response response = await put(path, data, token: token);
     return ChatUnread.fromJson(json.decode(response.body));
   }
 
-  Future<bool> deleteChatUnreads(
+  Future<bool> deleteChatUnread(
       String basePath, int id, String token) async {
     final String path = p.join(basePath, 'chat_unreads/$id');
     final http.Response response = await delete(path, token: token);
@@ -166,7 +166,7 @@ class MateriaChatAPI extends MateriaAPI {
   }
 
   // my-chat-rooms
-  Future<List<ChatRoom>> myChatRooms(String basePath, String token) async {
+  Future<List<ChatRoom>> listMyChatRooms(String basePath, String token) async {
     final String path = p.join(basePath, 'my-chat-rooms');
     final http.Response response = await get(path, token: token);
     return ChatRoom.fromListJson(json.decode(response.body));
