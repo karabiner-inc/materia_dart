@@ -15,7 +15,8 @@ class Offer {
       this.toUserId,
       this.toUser,
       this.offerTime,
-      this.answerTime});
+      this.answerTime,
+      this.chatRoomId});
 
   factory Offer.fromJson(dynamic json) {
     if (json == null) {
@@ -36,7 +37,7 @@ class Offer {
         toUser: User.fromJson(json['to_user']),
         offerTime: json['offer_time'],
         answerTime: json['answer_time'],
-
+        chatRoomId: json['chat_room_id']
         );
   }
 
@@ -61,4 +62,5 @@ class Offer {
   User toUser;
   String offerTime;
   String answerTime;
+  int chatRoomId;
 }
